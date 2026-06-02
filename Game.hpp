@@ -12,6 +12,9 @@ private:
     void render();
 
     sf::RenderWindow game_window;
+    const int game_window_width = 1280;
+    const int game_window_height = 720;
+
     sf::Clock game_clock;
 
     enum class Game_state {

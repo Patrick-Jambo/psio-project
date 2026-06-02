@@ -1,8 +1,7 @@
 #include "Game.hpp"
 
 Game::Game() {
-    const sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-    game_window.create(desktop, "WHG", sf::Style::Fullscreen);
+    game_window.create(sf::VideoMode(game_window_width, game_window_height), "WHG");
 }
 
 void Game::run() {
