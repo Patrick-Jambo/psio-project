@@ -1,0 +1,27 @@
+{
+  "1": {
+    "intertitle_text": "You don't stand a chance.",
+    "save_1_best_time": 10.5,
+    "save_2_best_time": 10.5
+  },
+  "2": {
+    "intertitle_text": "Slow and steady wins the... oh wait, you died.",
+    "save_1_best_time": 10.5,
+    "save_2_best_time": 10.5
+  },
+  "3": {
+    "intertitle_text": "Get ready for the double trouble.",
+    "save_1_best_time": 10.5,
+    "save_2_best_time": 10.5
+  },
+  "4": {
+    "intertitle_text": "This is where it actually gets hard.",
+    "save_1_best_time": 10.5,
+    "save_2_best_time": 10.5
+  },
+  "5": {
+    "intertitle_text": "Congratulations, you reached the final stretch!",
+    "save_1_best_time": 10.5,
+    "save_2_best_time": 10.5
+  }
+}
