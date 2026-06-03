@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "core/ResourceManager.hpp"
 
 class Game {
 public:
@@ -16,6 +17,7 @@ private:
     const int game_window_height = 720;
 
     sf::Clock game_clock;
+    ResourceManager resources;
 
     enum class Game_state {
         MAIN_MENU,
