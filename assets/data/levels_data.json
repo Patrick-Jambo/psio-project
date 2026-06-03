@@ -1,27 +1,57 @@
 {
   "1": {
     "intertitle_text": "You don't stand a chance.",
-    "save_1_best_time": 10.5,
-    "save_2_best_time": 10.5
+    "save_1": {
+      "best_time": -1,
+      "completed": false
+    },
+    "save_2": {
+      "best_time": -1,
+      "completed": false
+    }
   },
   "2": {
     "intertitle_text": "Slow and steady wins the... oh wait, you died.",
-    "save_1_best_time": 10.5,
-    "save_2_best_time": 10.5
+    "save_1": {
+      "best_time": -1,
+      "completed": false
+    },
+    "save_2": {
+      "best_time": -1,
+      "completed": false
+    }
   },
   "3": {
     "intertitle_text": "Get ready for the double trouble.",
-    "save_1_best_time": 10.5,
-    "save_2_best_time": 10.5
+    "save_1": {
+      "best_time": -1,
+      "completed": false
+    },
+    "save_2": {
+      "best_time": -1,
+      "completed": false
+    }
   },
   "4": {
     "intertitle_text": "This is where it actually gets hard.",
-    "save_1_best_time": 10.5,
-    "save_2_best_time": 10.5
+    "save_1": {
+      "best_time": -1,
+      "completed": false
+    },
+    "save_2": {
+      "best_time": -1,
+      "completed": false
+    }
   },
   "5": {
-    "intertitle_text": "Congratulations, you reached the final stretch!",
-    "save_1_best_time": 10.5,
-    "save_2_best_time": 10.5
+    "intertitle_text": "The final stretch!",
+    "save_1": {
+      "best_time": -1,
+      "completed": false
+    },
+    "save_2": {
+      "best_time": -1,
+      "completed": false
+    }
   }
 }
