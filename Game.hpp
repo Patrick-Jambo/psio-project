@@ -3,6 +3,7 @@
 #include "core/ResourceManager.hpp"
 #include "ui/Button.hpp"
 #include "ui/MainMenu.hpp"
+#include "objects/Player.hpp"
 #include <memory>
 
 class Game {
@@ -32,4 +33,5 @@ private:
 
     Game_state game_state = Game_state::MAIN_MENU;
     std::unique_ptr<MainMenu> main_menu;
+    std::unique_ptr<Player> player;
 };

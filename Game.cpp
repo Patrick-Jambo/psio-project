@@ -48,6 +48,7 @@ void Game::handle_events() {
             if (start_game) {
                 game_window.setMouseCursor(default_cursor);
                 game_state = Game_state::PLAYING;
+                player = std::make_unique<Player>(sf::Vector2f(100, 100), resources);
             }
         }
     }
@@ -67,7 +68,7 @@ void Game::update(float dt) {
     }
 
     if (game_state == Game_state::PLAYING) {
-
+        player->update(dt);
     }
 }
 
@@ -79,7 +80,7 @@ void Game::render() {
     }
 
     if (game_state == Game_state::PLAYING) {
-        // stub
+        game_window.draw(*player);
     }
 
     game_window.display();
