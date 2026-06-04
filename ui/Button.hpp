@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-class Button {
+class   Button {
 public:
     Button(const sf::Vector2f& position, const int& character_size, const std::string& text, const sf::Font& font);
 
@@ -9,6 +9,9 @@ public:
     bool clicked(const sf::Vector2i& mouse_pos, const sf::Event& event);
     bool mouse_hover(const sf::Vector2i& mouse_pos);
     void draw(sf::RenderWindow& window);
+
+    void set_position(const sf::Vector2f& position);
+    float get_width() const;
 
 private:
     sf::Text text;

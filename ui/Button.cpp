@@ -36,3 +36,12 @@ void Button::draw(sf::RenderWindow& window) {
     window.draw(bounds);
     window.draw(text);
 }
+
+void Button::set_position(const sf::Vector2f& position) {
+    text.setPosition(position);
+    bounds.setPosition(position);
+}
+
+float Button::get_width() const {
+    return text.getGlobalBounds().width;
+}

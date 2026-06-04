@@ -11,8 +11,9 @@ public:
     void handle_event(const sf::Vector2i& mouse_pos, const sf::Event& event, bool& start_menu_flag);
     void update(const sf::Vector2i mouse_pos);
     void draw(sf::RenderWindow& game_window);
+    bool play_button_hover(const sf::Vector2i& mouse_pos);
+
 private:
     sf::Text game_title;
     std::unique_ptr<Button> play_button;
-
 };
