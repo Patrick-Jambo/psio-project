@@ -3,7 +3,11 @@
 #include "core/Config.hpp"
 
 Game::Game() {
-    game_window.create(sf::VideoMode(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT), Config::GAME_NAME);
+    game_window.create(
+        sf::VideoMode(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT),
+        Config::GAME_NAME,
+        sf::Style::Titlebar | sf::Style::Close
+    );
     game_window.setFramerateLimit(Config::GAME_FRAME_RATE);
 
     main_menu = std::make_unique<MainMenu>(resources);
@@ -71,7 +75,7 @@ void Game::render() {
     game_window.clear(sf::Color(177, 179, 249));
 
     if (game_state == Game_state::MAIN_MENU) {
-        main_menu->draw(game_window);
+        main_menu->draw(game_window, resources);
     }
 
     if (game_state == Game_state::PLAYING) {

@@ -45,3 +45,8 @@ void Button::set_position(const sf::Vector2f& position) {
 float Button::get_width() const {
     return text.getGlobalBounds().width;
 }
+
+void Button::set_text_outline(const sf::Color &outline_color, const float& thickness) {
+    text.setOutlineColor(outline_color);
+    text.setOutlineThickness(thickness);
+}

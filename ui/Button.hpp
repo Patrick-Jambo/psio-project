@@ -13,6 +13,8 @@ public:
     void set_position(const sf::Vector2f& position);
     float get_width() const;
 
+    void set_text_outline(const sf::Color& outline_color, const float& thickness);
+
 private:
     sf::Text text;
     sf::RectangleShape bounds;
