@@ -19,6 +19,8 @@ MainMenu::MainMenu(ResourceManager &resources) {
     play_button->set_position(sf::Vector2f(Utils::get_centered_x(play_button->get_width()), 350));
     play_button->set_text_outline(sf::Color(0,0,0), 5);
 
+    background_sprite.setTexture(resources.get_texture("assets/img/background.png"));
+
 }
 
 void MainMenu::handle_event(const sf::Vector2i &mouse_pos, const sf::Event &event, bool &start_menu_flag) {
@@ -31,10 +33,8 @@ void MainMenu::update(const sf::Vector2i mouse_pos) {
     play_button->update(mouse_pos);
 }
 
-void MainMenu::draw(sf::RenderWindow &game_window, ResourceManager &resources) {
-    sf::Sprite bg;
-    bg.setTexture(resources.get_texture("assets/img/background.png"));
-    game_window.draw(bg);
+void MainMenu::draw(sf::RenderWindow &game_window) {
+    game_window.draw(background_sprite);
     game_window.draw(game_title);
     play_button->draw(game_window);
 }

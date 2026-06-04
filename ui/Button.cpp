@@ -9,7 +9,7 @@ Button::Button(const sf::Vector2f& position, const int& character_size, const st
     this->text.setPosition(position);
 
     bounds.setPosition(position);
-    bounds.setSize(sf::Vector2f(this->text.getGlobalBounds().width, this->text.getGlobalBounds().height * 1.5));
+    bounds.setSize(sf::Vector2f(this->text.getLocalBounds().width, this->text.getGlobalBounds().height * 1.5));
     bounds.setFillColor(sf::Color::Transparent);
 }
 

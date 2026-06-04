@@ -75,7 +75,7 @@ void Game::render() {
     game_window.clear(sf::Color(177, 179, 249));
 
     if (game_state == Game_state::MAIN_MENU) {
-        main_menu->draw(game_window, resources);
+        main_menu->draw(game_window);
     }
 
     if (game_state == Game_state::PLAYING) {
