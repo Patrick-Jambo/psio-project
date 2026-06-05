@@ -16,7 +16,14 @@ private:
     void handle_input();
     sf::Sprite player_sprite;
     sf::Vector2f velocity;
-    const float SPEED = 300;
+    const float SPEED = 400;
+
+
+    std::vector<sf::IntRect> animation_frames;
+    size_t current_frame = 0;
+    float animation_timer = 0.0f;
+    const float FRAME_DURATION = 0.15f;
+    
 
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
