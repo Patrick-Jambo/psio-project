@@ -20,10 +20,16 @@ animator(player_sprite) {
 void Player::handle_input() {
     velocity = sf::Vector2f(0.0f, 0.0f);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) velocity.y = -SPEED;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) velocity.y = SPEED;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) velocity.x = -SPEED;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) velocity.x = SPEED;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) velocity.y -= 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) velocity.y += 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) velocity.x -= 1;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) velocity.x += 1;
+
+    if (velocity.x != 0 || velocity.y != 0) {
+        auto length = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+        velocity.x = (velocity.x / length) * SPEED;
+        velocity.y = (velocity.y / length) * SPEED;
+    }
 }
 
 void Player::update(float dt, const TileMap& level_map) {
