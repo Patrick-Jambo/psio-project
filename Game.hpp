@@ -4,6 +4,7 @@
 #include "ui/Button.hpp"
 #include "ui/MainMenu.hpp"
 #include "objects/Player.hpp"
+#include "core/TileMap.hpp"
 #include <memory>
 
 class Game {
@@ -15,6 +16,7 @@ private:
     void handle_events();
     void update(float dt);
     void render();
+    void init_level();
 
     sf::Clock game_clock;
     ResourceManager resources;
@@ -31,7 +33,9 @@ private:
         PAUSED
     };
 
+    TileMap level_map;
     Game_state game_state = Game_state::MAIN_MENU;
     std::unique_ptr<MainMenu> main_menu;
     std::unique_ptr<Player> player;
+
 };

@@ -1,8 +1,9 @@
 #include "Game.hpp"
 #include "ui/Button.hpp"
 #include "core/Config.hpp"
+#include "core/LevelManager.hpp"
 
-Game::Game() {
+Game::Game() : level_map(resources) {
     game_window.create(
         sf::VideoMode(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT),
         Config::GAME_NAME,
@@ -47,8 +48,8 @@ void Game::handle_events() {
 
             if (start_game) {
                 game_window.setMouseCursor(default_cursor);
+                init_level();
                 game_state = Game_state::PLAYING;
-                player = std::make_unique<Player>(sf::Vector2f(100, 100), resources);
             }
         }
     }
@@ -68,7 +69,7 @@ void Game::update(float dt) {
     }
 
     if (game_state == Game_state::PLAYING) {
-        player->update(dt);
+        player->update(dt, level_map);
     }
 }
 
@@ -80,8 +81,16 @@ void Game::render() {
     }
 
     if (game_state == Game_state::PLAYING) {
+        game_window.draw(level_map);
         game_window.draw(*player);
     }
 
     game_window.display();
+}
+
+void Game::init_level() {
+    std::vector<std::vector<int>> first_level = LevelManager::get_level(1);
+    level_map.load_level(first_level);
+
+    player = std::make_unique<Player>(sf::Vector2f(150.0f, 300.0f), resources);
 }
