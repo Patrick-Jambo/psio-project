@@ -4,12 +4,13 @@
 
 class Animation {
 public:
-    Animation(sf::Sprite& target_sprite, float frame_duration = 0.15f);
+    Animation(sf::Sprite& target_sprite, float frame_duration = 0.15f, bool loop = true);
 
     void add_frame(const sf::IntRect& rect);
     void add_frame_line(int start_x, int start_y, int width, int height, int count, int spacing = 0);
     void update(float dt);
     void reset();
+    bool is_finished() const {return finished;}
 
 private:
     sf::Sprite& sprite;
@@ -17,4 +18,6 @@ private:
     size_t current_frame = 0;
     float timer = 0;
     float frame_duration;
+    bool loop;
+    bool finished = false;
 };

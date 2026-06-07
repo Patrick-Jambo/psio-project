@@ -70,6 +70,16 @@ void Game::update(float dt) {
 
     if (game_state == Game_state::PLAYING) {
         player->update(dt, level_map);
+
+        for (auto& enemy : enemies) {
+            enemy->update(dt,level_map);
+        }
+
+        for (auto& collectible : collectibles) {
+            collectible->update(dt, level_map);
+        }
+
+        check_game_collisions();
     }
 }
 
@@ -82,6 +92,15 @@ void Game::render() {
 
     if (game_state == Game_state::PLAYING) {
         game_window.draw(level_map);
+
+        for (auto& collectible : collectibles) {
+            game_window.draw(*collectible);
+        }
+
+        for (auto& enemy : enemies) {
+            game_window.draw(*enemy);
+        }
+
         game_window.draw(*player);
     }
 
@@ -97,8 +116,25 @@ void Game::init_level(const int& level_num) {
 
     enemies.clear();
     collectibles.clear();
+
+    //collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(150.0f, 450.0f),resources));
+    enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(200.0f,400.0f),sf::Vector2f(300.0f,500.0f),400.0f,resources));
 }
 
 void Game::check_game_collisions() {
+    sf::FloatRect player_hitbox = player->get_hitbox();
 
+    for (auto& enemy : enemies) {
+        if (player_hitbox.intersects(enemy->get_hitbox())) {
+            player->setPosition(LevelManager::get_player_start_pos(current_level));
+            return;
+        }
+    }
+
+    for (auto& collectible : collectibles) {
+        if (player_hitbox.intersects(collectible->get_hitbox()) && !collectible->is_collected()) {
+            collectible->collect();
+            // TODO: ADD COLLECTIBLE COUNTER
+        }
+    }
 }

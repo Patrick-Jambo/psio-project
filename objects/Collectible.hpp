@@ -11,13 +11,22 @@ public:
     void update(float dt, const TileMap& level_map) override;
     sf::FloatRect get_hitbox() const override;
 
-    bool is_collected() const { return collected; }
-    void collect() { collected = true; }
+    bool is_collected() const { return state != State::IDLE; }
+    bool is_completely_done() const { return state == State::FINISHED; }
+    void collect();
 
 private:
     sf::Sprite sprite;
     bool collected = false;
     float bounce_timer = 0.0f;
+
+    enum class State {
+        IDLE,
+        BURNING,
+        FINISHED
+    };
+
+    State state = State::IDLE;
 
 protected:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

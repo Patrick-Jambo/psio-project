@@ -1,7 +1,7 @@
 #include "Animation.hpp"
 
-Animation::Animation(sf::Sprite &target_sprite, float frame_duration) :
-    sprite(target_sprite), frame_duration(frame_duration)
+Animation::Animation(sf::Sprite &target_sprite, float frame_duration, bool loop) :
+    sprite(target_sprite), frame_duration(frame_duration), loop(loop)
 {
 
 }
@@ -22,19 +22,30 @@ void Animation::add_frame_line(int start_x, int start_y, int width, int height, 
 }
 
 void Animation::update(float dt) {
-    if (frames.empty()) return;
+    if (frames.empty() || finished) return;
 
     timer += dt;
     if (timer >= frame_duration) {
         timer -= frame_duration;
-        current_frame = (current_frame + 1) % frames.size();
-        sprite.setTextureRect(frames[current_frame]);
+
+        if (current_frame + 1 < frames.size()) {
+            current_frame++;
+            sprite.setTextureRect(frames[current_frame]);
+        } else {
+            if (loop) {
+                current_frame = 0;
+                sprite.setTextureRect(frames[current_frame]);
+            } else {
+                finished = true;
+            }
+        }
     }
 }
 
 void Animation::reset() {
     timer = 0;
     current_frame = 0;
+    finished = false;
     if (!frames.empty()) {
         sprite.setTextureRect(frames[0]);
     }
