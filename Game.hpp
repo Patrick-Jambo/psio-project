@@ -5,6 +5,8 @@
 #include "ui/MainMenu.hpp"
 #include "objects/Player.hpp"
 #include "core/TileMap.hpp"
+#include "objects/Enemy.hpp"
+#include "objects/Collectible.hpp"
 #include <memory>
 
 class Game {
@@ -16,7 +18,7 @@ private:
     void handle_events();
     void update(float dt);
     void render();
-    void init_level();
+    void init_level(const int& level_num);
 
     sf::Clock game_clock;
     ResourceManager resources;
@@ -33,9 +35,13 @@ private:
         PAUSED
     };
 
+    int current_level = 1;
     TileMap level_map;
     Game_state game_state = Game_state::MAIN_MENU;
     std::unique_ptr<MainMenu> main_menu;
     std::unique_ptr<Player> player;
+    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::unique_ptr<Collectible>> collectibles;
+    void check_game_collisions();
 
 };

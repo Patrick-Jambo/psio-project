@@ -48,7 +48,7 @@ void Game::handle_events() {
 
             if (start_game) {
                 game_window.setMouseCursor(default_cursor);
-                init_level();
+                init_level(current_level);
                 game_state = Game_state::PLAYING;
             }
         }
@@ -88,9 +88,17 @@ void Game::render() {
     game_window.display();
 }
 
-void Game::init_level() {
-    std::vector<std::vector<int>> first_level = LevelManager::get_level(1);
+void Game::init_level(const int& level_num) {
+    std::vector<std::vector<int>> first_level = LevelManager::get_level(level_num);
     level_map.load_level(first_level);
 
-    player = std::make_unique<Player>(sf::Vector2f(150.0f, 300.0f), resources);
+    sf::Vector2f start_pos = LevelManager::get_player_start_pos(level_num);
+    player = std::make_unique<Player>(start_pos, resources);
+
+    enemies.clear();
+    collectibles.clear();
+}
+
+void Game::check_game_collisions() {
+
 }

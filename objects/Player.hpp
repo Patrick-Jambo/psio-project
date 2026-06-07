@@ -11,17 +11,13 @@ public:
     Player(sf::Vector2f start_pos, ResourceManager& resources);
     ~Player() override = default;
 
-    void update(float dt, const TileMap& level_map);
+    void update(float dt, const TileMap& level_map) override;
     sf::FloatRect get_hitbox() const override;
 
 private:
     const float SPEED = 400;
-    const float HITBOX_WIDTH_PCT  = 0.93f;
-    const float HITBOX_HEIGHT_PCT = 0.68f;
-
     sf::Sprite player_sprite;
     sf::Vector2f velocity;
-    Animation animator;
 
     void handle_input();
 

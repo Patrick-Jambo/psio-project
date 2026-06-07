@@ -1,14 +1,25 @@
 #pragma once
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/Transformable.hpp>
+#include "Entity.hpp"
+#include <SFML/Graphics/Sprite.hpp>
+#include "../core/ResourceManager.hpp"
 
-class Entity : public sf::Drawable, public sf::Transformable {
+class Enemy : public Entity {
 public:
-    Entity() = default;
-    virtual ~Entity() = default;
+    Enemy(sf::Vector2f start, sf::Vector2f end, float speed, ResourceManager& resources);
+    ~Enemy() override = default;
 
-    virtual void update(float dt) = 0;
-    virtual sf::FloatRect get_hitbox() const = 0;
+    void update(float dt, const TileMap &level_map) override;
+    sf::FloatRect get_hitbox() const override;
+
+private:
+    sf::Sprite enemy_sprite;
+
+    sf::Vector2f start_pos;
+    sf::Vector2f end_pos;
+    sf::Vector2f target_pos;
+    float speed;
+
 protected:
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+
 };

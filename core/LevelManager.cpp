@@ -7,6 +7,20 @@ std::vector<std::vector<int>> LevelManager::get_level(int level_num) {
     }
 }
 
+sf::Vector2f LevelManager::get_player_start_pos(int level_num) {
+    sf::Vector2f player_start_pos;
+    switch (level_num) {
+        case 1:
+            player_start_pos.x = 150.0f;
+            player_start_pos.y = 300.0f;
+            break;
+        default:
+            player_start_pos.x = 100.0f;
+            player_start_pos.y = 100.0f;
+    }
+    return player_start_pos;
+}
+
 std::vector<std::vector<int>> LevelManager::create_level_1() {
     // --- ŚCIĄGAWKA DLA PROJEKTANTA ---
     // 3   - Grass (Trawa / Ściana)

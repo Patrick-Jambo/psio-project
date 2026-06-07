@@ -2,19 +2,18 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <cmath>
 
-#define DEBUG_HITBOX
-
-Player::Player(sf::Vector2f start_pos, ResourceManager& resources) :
-animator(player_sprite) {
+Player::Player(sf::Vector2f start_pos, ResourceManager& resources) {
     const sf::Texture& player_texture = resources.get_texture("assets/img/player.png");
     player_sprite.setTexture(player_texture);
 
-    animator.add_frame_line(0,0,319,434,6,5);
+    animator = std::make_unique<Animation>(player_sprite);
+    animator->add_frame_line(0,0,319,434,6,5);
 
     player_sprite.setOrigin(319 / 2.0f, 434 / 2.0f);
     setScale(0.2f, 0.2f);
     setPosition(start_pos);
-
+    HITBOX_WIDTH_PCT = 0.93f;
+    HITBOX_HEIGHT_PCT = 0.68f;
 }
 
 void Player::handle_input() {
@@ -34,17 +33,12 @@ void Player::handle_input() {
 
 void Player::update(float dt, const TileMap& level_map) {
     handle_input();
-    animator.update(dt);
+    animator->update(dt);
 
-    // --- DEBUG ---
-    static float timer = 0.0f;
-    timer += dt;
-    if (timer >= 1.0f) {
-        timer = 0.0f;
-        sf::FloatRect hb = get_hitbox();
-        printf("Hitbox: pos=(%.1f, %.1f)  size=(%.1f x %.1f)\n",
-               hb.left, hb.top, hb.width, hb.height);
+    if (HITBOX_DEBUG) {
+        log_hitbox(dt);
     }
+
 
     if (velocity.x != 0.0f) {
         sf::Vector2f old_pos = getPosition();
@@ -83,13 +77,8 @@ sf::FloatRect Player::get_hitbox() const {
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(player_sprite, states);
-#ifdef DEBUG_HITBOX
-    sf::FloatRect hb = get_hitbox();
-    sf::RectangleShape debug_rect(sf::Vector2f(hb.width, hb.height));
-    debug_rect.setPosition(hb.left, hb.top);
-    debug_rect.setFillColor(sf::Color(255, 0, 0, 80));
-    debug_rect.setOutlineColor(sf::Color::Red);
-    debug_rect.setOutlineThickness(1.0f);
-    target.draw(debug_rect);
-#endif
+
+    if (HITBOX_DEBUG) {
+        draw_debug_hitbox(target);
+    }
 }
