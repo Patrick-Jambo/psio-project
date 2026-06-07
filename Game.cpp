@@ -108,17 +108,17 @@ void Game::render() {
 }
 
 void Game::init_level(const int& level_num) {
+    // level tiles
     std::vector<std::vector<int>> first_level = LevelManager::get_level(level_num);
     level_map.load_level(first_level);
 
+    // player spawn
     sf::Vector2f start_pos = LevelManager::get_player_start_pos(level_num);
     player = std::make_unique<Player>(start_pos, resources);
 
-    enemies.clear();
-    collectibles.clear();
-
-    //collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(150.0f, 450.0f),resources));
-    enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(200.0f,400.0f),sf::Vector2f(300.0f,500.0f),400.0f,resources));
+    // enemies and leaves
+    enemies = LevelManager::get_level_enemies(level_num, resources);
+    collectibles = LevelManager::get_level_collectibles(level_num, resources);
 }
 
 void Game::check_game_collisions() {
