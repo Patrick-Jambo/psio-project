@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "core/ResourceManager.hpp"
 #include "ui/Button.hpp"
+#include "ui/Settings.hpp"
 #include "ui/MainMenu.hpp"
 #include "objects/Player.hpp"
 #include "core/TileMap.hpp"
@@ -38,10 +39,13 @@ private:
     int current_level = 1;
     TileMap level_map;
     Game_state game_state = Game_state::MAIN_MENU;
+
     std::unique_ptr<MainMenu> main_menu;
     std::unique_ptr<Player> player;
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Collectible>> collectibles;
+    std::unique_ptr<Settings> game_settings;
+
     void check_game_collisions();
 
 };

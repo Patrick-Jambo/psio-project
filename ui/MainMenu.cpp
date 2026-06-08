@@ -4,6 +4,7 @@
 
 MainMenu::MainMenu(ResourceManager &resources) {
     const sf::Font& main_font = resources.get_font("assets/fonts/Pixelmax-Regular.otf");
+
     game_title.setFont(main_font);
     game_title.setString(Config::GAME_NAME);
     game_title.setCharacterSize(90);
@@ -11,16 +12,18 @@ MainMenu::MainMenu(ResourceManager &resources) {
 
     float game_title_x = Utils::get_centered_x(game_title.getGlobalBounds().width);
     game_title.setPosition(game_title_x, 150);
-    game_title.setOutlineColor(sf::Color(0,0,0));
+    game_title.setOutlineColor(sf::Color::Black);
     game_title.setOutlineThickness(5);
 
-
     play_button = std::make_unique<Button>(sf::Vector2f(0, 350), 85, "PLAY", main_font);
+
+    play_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
+
+    play_button->set_text_outlines(sf::Color::Black, sf::Color::Black, 5);
+
     play_button->set_position(sf::Vector2f(Utils::get_centered_x(play_button->get_width()), 350));
-    play_button->set_text_outline(sf::Color(0,0,0), 5);
 
     background_sprite.setTexture(resources.get_texture("assets/img/background.png"));
-
 }
 
 void MainMenu::handle_event(const sf::Vector2i &mouse_pos, const sf::Event &event, bool &start_menu_flag) {
@@ -38,8 +41,3 @@ void MainMenu::draw(sf::RenderWindow &game_window) {
     game_window.draw(game_title);
     play_button->draw(game_window);
 }
-
-bool MainMenu::play_button_hover(const sf::Vector2i &mouse_pos) {
-    return play_button->mouse_hover(mouse_pos);
-}
-

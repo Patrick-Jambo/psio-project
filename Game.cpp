@@ -22,6 +22,9 @@ Game::Game() : level_map(resources) {
         game_window.setMouseCursor(default_cursor);
     }
     hand_cursor.loadFromSystem(sf::Cursor::Hand);
+
+    const sf::Font& font = resources.get_font("assets/fonts/Pixelmax-Regular.otf");
+    game_settings = std::make_unique<Settings>(font, bg_music);
 }
 
 void Game::run() {
@@ -42,6 +45,10 @@ void Game::handle_events() {
             game_window.close();
         }
 
+        if (game_settings) {
+            game_settings->handle_event(mouse_pos, event);
+        }
+
         if (game_state == Game_state::MAIN_MENU) {
             bool start_game = false;
             main_menu->handle_event(mouse_pos, event, start_game);
@@ -58,28 +65,35 @@ void Game::handle_events() {
 void Game::update(float dt) {
     sf::Vector2i mouse_pos = sf::Mouse::getPosition(game_window);
 
+    if (game_settings) {
+        game_settings->update(mouse_pos);
+    }
+
     if (game_state == Game_state::MAIN_MENU) {
         main_menu->update(mouse_pos);
-
-        if (main_menu->play_button_hover(mouse_pos)) {
-            game_window.setMouseCursor(hand_cursor);
-        } else {
-            game_window.setMouseCursor(default_cursor);
-        }
     }
 
     if (game_state == Game_state::PLAYING) {
         player->update(dt, level_map);
-
-        for (auto& enemy : enemies) {
-            enemy->update(dt,level_map);
-        }
-
-        for (auto& collectible : collectibles) {
-            collectible->update(dt, level_map);
-        }
-
+        for (auto& enemy : enemies) enemy->update(dt, level_map);
+        for (auto& collectible : collectibles) collectible->update(dt, level_map);
         check_game_collisions();
+    }
+
+    bool need_hand_cursor = false;
+
+    if (game_settings && game_settings->any_button_hovered()) {
+        need_hand_cursor = true;
+    }
+
+    else if (game_state == Game_state::MAIN_MENU && main_menu->get_play_button().is_mouse_over()) {
+        need_hand_cursor = true;
+    }
+
+    if (need_hand_cursor) {
+        game_window.setMouseCursor(hand_cursor);
+    } else {
+        game_window.setMouseCursor(default_cursor);
     }
 }
 
@@ -102,6 +116,10 @@ void Game::render() {
         }
 
         game_window.draw(*player);
+
+        if (game_settings) {
+            game_settings->draw(game_window);
+        }
     }
 
     game_window.display();

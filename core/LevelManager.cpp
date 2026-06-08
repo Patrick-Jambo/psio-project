@@ -103,6 +103,5 @@ std::vector<std::vector<int>> LevelManager::create_level_1() {
 }
 
 std::vector<std::vector<int>> LevelManager::create_level_2() {
-    // Miejsce na kolejny poziom w przyszłości
     return create_level_1();
 }

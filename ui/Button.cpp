@@ -1,33 +1,36 @@
 #include "Button.hpp"
 
-Button::Button(const sf::Vector2f& position, const int& character_size, const std::string &text, const sf::Font &font) {
-    this->text.setFont(font);
-    this->text.setString(text);
-    this->text.setCharacterSize(character_size);
-    this->text.setFillColor(default_color);
-
-    this->text.setPosition(position);
+Button::Button(const sf::Vector2f& position, const int& character_size, const std::string &text_str, const sf::Font &font) {
+    text.setFont(font);
+    text.setString(text_str);
+    text.setCharacterSize(character_size);
+    text.setFillColor(text_default_color);
+    text.setPosition(position);
 
     bounds.setPosition(position);
-    bounds.setSize(sf::Vector2f(this->text.getLocalBounds().width, this->text.getGlobalBounds().height * 1.5));
+    bounds.setSize(sf::Vector2f(text.getLocalBounds().width, text.getGlobalBounds().height * 1.5f));
     bounds.setFillColor(sf::Color::Transparent);
 }
 
-bool Button::mouse_hover(const sf::Vector2i& mouse_pos) {
-    return bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mouse_pos));
+void Button::update(const sf::Vector2i& mouse_pos) {
+    hovered = bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mouse_pos));
+    apply_visual_state();
 }
 
-void Button::update(const sf::Vector2i& mouse_pos) {
-    if (mouse_hover(mouse_pos)) {
-        text.setFillColor(hover_color);
+void Button::apply_visual_state() {
+    if (hovered) {
+        text.setFillColor(text_hover_color);
+        text.setOutlineColor(outline_hover_color);
     } else {
-        text.setFillColor(default_color);
+        text.setFillColor(text_default_color);
+        text.setOutlineColor(outline_default_color);
     }
+    text.setOutlineThickness(outline_thickness);
 }
 
 bool Button::clicked(const sf::Vector2i& mouse_pos, const sf::Event& event) {
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-        return mouse_hover(mouse_pos);
+        return hovered;
     }
     return false;
 }
@@ -46,7 +49,21 @@ float Button::get_width() const {
     return text.getGlobalBounds().width;
 }
 
-void Button::set_text_outline(const sf::Color &outline_color, const float& thickness) {
-    text.setOutlineColor(outline_color);
-    text.setOutlineThickness(thickness);
+void Button::set_text_string(const std::string& new_text) {
+    text.setString(new_text);
+    // Recalculates if string length changed
+    bounds.setSize(sf::Vector2f(text.getLocalBounds().width, text.getGlobalBounds().height * 1.5f));
+}
+
+void Button::set_text_colors(const sf::Color& default_c, const sf::Color& hover_c) {
+    text_default_color = default_c;
+    text_hover_color = hover_c;
+    apply_visual_state();
+}
+
+void Button::set_text_outlines(const sf::Color& default_outline, const sf::Color& hover_outline, float thickness) {
+    outline_default_color = default_outline;
+    outline_hover_color = hover_outline;
+    outline_thickness = thickness;
+    apply_visual_state();
 }
