@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include <SFML/Window/Keyboard.hpp>
+#include "../ui/Settings.hpp"
 #include <cmath>
 
 Player::Player(sf::Vector2f start_pos, ResourceManager& resources) {
@@ -35,7 +36,7 @@ void Player::update(float dt, const TileMap& level_map) {
     handle_input();
     animator->update(dt);
 
-    if (HITBOX_DEBUG) {
+    if (Settings::hitboxes_enabled) {
         log_hitbox(dt);
     }
 
@@ -78,7 +79,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(player_sprite, states);
 
-    if (HITBOX_DEBUG) {
+    if (Settings::hitboxes_enabled) {
         draw_debug_hitbox(target);
     }
 }

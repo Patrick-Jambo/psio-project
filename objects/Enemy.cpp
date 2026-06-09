@@ -1,5 +1,6 @@
 #include "Enemy.hpp"
 #include <cmath>
+#include "../ui/Settings.hpp"
 
 Enemy::Enemy(sf::Vector2f start, sf::Vector2f end, float speed, ResourceManager &resources) {
     start_pos = start;
@@ -57,7 +58,7 @@ void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(enemy_sprite, states);
 
-    if (HITBOX_DEBUG) {
+    if (Settings::hitboxes_enabled) {
         draw_debug_hitbox(target);
     }
 }

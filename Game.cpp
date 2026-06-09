@@ -3,6 +3,7 @@
 #include "core/Config.hpp"
 #include "core/LevelManager.hpp"
 
+
 Game::Game() : level_map(resources) {
     game_window.create(
         sf::VideoMode(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT),
@@ -142,17 +143,18 @@ void Game::init_level(const int& level_num) {
 void Game::check_game_collisions() {
     sf::FloatRect player_hitbox = player->get_hitbox();
 
-    for (auto& enemy : enemies) {
-        if (player_hitbox.intersects(enemy->get_hitbox())) {
-            player->setPosition(LevelManager::get_player_start_pos(current_level));
-            return;
+    if (game_settings && !game_settings->is_god_mode()) {
+        for (auto& enemy : enemies) {
+            if (player_hitbox.intersects(enemy->get_hitbox())) {
+                player->setPosition(LevelManager::get_player_start_pos(current_level));
+                return;
+            }
         }
     }
 
     for (auto& collectible : collectibles) {
         if (player_hitbox.intersects(collectible->get_hitbox()) && !collectible->is_collected()) {
             collectible->collect();
-            // TODO: ADD COLLECTIBLE COUNTER
         }
     }
 }

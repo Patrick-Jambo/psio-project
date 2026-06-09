@@ -1,6 +1,6 @@
 #include "Collectible.hpp"
 #include <cmath>
-
+#include "../ui/Settings.hpp"
 Collectible::Collectible(sf::Vector2f pos, ResourceManager& resources) {
     const sf::Texture& tex = resources.get_texture("assets/img/leaf.png");
     sprite.setTexture(tex);
@@ -66,7 +66,7 @@ void Collectible::draw(sf::RenderTarget& target, sf::RenderStates states) const 
     states.transform *= getTransform();
     target.draw(sprite, states);
 
-    if (HITBOX_DEBUG && state == State::IDLE) {
+    if (Settings::hitboxes_enabled && state == State::IDLE) {
         draw_debug_hitbox(target);
     }
 }
