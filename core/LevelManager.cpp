@@ -6,7 +6,8 @@
 std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
     switch (level_num) {
         case 1: return create_level_1();
-        default: return create_level_2();
+        case 2: return create_level_2();
+        default: return {{}};
     }
 }
 
@@ -17,6 +18,11 @@ sf::Vector2f LevelManager::get_player_start_pos(const int& level_num) {
             player_start_pos.x = 150.0f;
             player_start_pos.y = 300.0f;
             break;
+        case 2:
+            player_start_pos.x = 64 * 2;
+            player_start_pos.y = 64 * 5;
+            break;
+
         default:
             player_start_pos.x = 100.0f;
             player_start_pos.y = 100.0f;

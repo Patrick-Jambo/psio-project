@@ -2,6 +2,7 @@
 #include "ui/Button.hpp"
 #include "core/Config.hpp"
 #include "core/LevelManager.hpp"
+#include "ui/LevelStatsDisplay.hpp"
 #include <iostream>
 
 
@@ -25,8 +26,10 @@ Game::Game() : level_map(resources) {
     }
     hand_cursor.loadFromSystem(sf::Cursor::Hand);
 
-    const sf::Font& font = resources.get_font("assets/fonts/Pixelmax-Regular.otf");
+    const sf::Font& font = resources.get_font("assets/fonts/Pixeled.ttf");
     game_settings = std::make_unique<Settings>(font, bg_music);
+
+    level_stats_display = std::make_unique<LevelStatsDisplay>(resources);
 }
 
 void Game::run() {
@@ -76,10 +79,18 @@ void Game::update(float dt) {
     }
 
     if (game_state == Game_state::PLAYING) {
+        level_time+=dt;
         player->update(dt, level_map);
+
         for (auto& enemy : enemies) enemy->update(dt, level_map);
+
         for (auto& collectible : collectibles) collectible->update(dt, level_map);
+
         check_game_collisions();
+
+        if (level_stats_display) {
+            level_stats_display->update(level_time, death_counter);
+        }
     }
 
     bool need_hand_cursor = false;
@@ -126,18 +137,26 @@ void Game::render() {
         for (auto& area : areas) {
             game_window.draw(*area);
         }
+
+        if (level_stats_display) {
+            level_stats_display->draw(game_window);
+        }
     }
 
     game_window.display();
 }
 
 void Game::init_level(const int& level_num) {
-    // level tiles
-    std::vector<std::vector<int>> first_level = LevelManager::get_level(level_num);
-    level_map.load_level(first_level);
+    // loads new levels
+    level_time = 0.0f;
+
+    std::vector<std::vector<int>> level_tiles = LevelManager::get_level(level_num);
+    level_map.load_level(level_tiles);
+
 
     // player spawn
     sf::Vector2f start_pos = LevelManager::get_player_start_pos(level_num);
+    std::cout << "X: " << start_pos.x << " Y: " << start_pos.y << std::endl;
     player = std::make_unique<Player>(start_pos, resources);
 
     // enemies and leaves
@@ -153,6 +172,8 @@ void Game::check_game_collisions() {
     if (game_settings && !game_settings->is_god_mode()) {
         for (auto& enemy : enemies) {
             if (player_hitbox.intersects(enemy->get_hitbox())) {
+                death_counter++;
+                //TODO: ADD DEATH ANIMATION
                 player->setPosition(LevelManager::get_player_start_pos(current_level));
                 return;
             }

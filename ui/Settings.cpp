@@ -7,7 +7,7 @@ bool Settings::god_mode_enabled = false;
 bool Settings::hitboxes_enabled = false;
 
 Settings::Settings(const sf::Font& font, sf::Music& bg_music) : music_ref(bg_music) {
-    int char_size = 24;
+    int char_size = 18;
     float current_x = 20.0f; // left margin
     float pos_y = 15.0f;     // top margin
     float spacing = 80.0f;   // gap between
@@ -21,8 +21,6 @@ Settings::Settings(const sf::Font& font, sf::Music& bg_music) : music_ref(bg_mus
     hitboxes_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, "HITBOXES: OFF", font);
     current_x += hitboxes_button->get_width() + spacing;
 
-    level_selector_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, "SKIP LEVEL", font);
-
     music_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
     music_button->set_text_outlines(sf::Color::Black, sf::Color::Black, 2.0f);
 
@@ -31,9 +29,6 @@ Settings::Settings(const sf::Font& font, sf::Music& bg_music) : music_ref(bg_mus
 
     hitboxes_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
     hitboxes_button->set_text_outlines(sf::Color::Black, sf::Color::Black, 2.0f);
-
-    level_selector_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
-    level_selector_button->set_text_outlines(sf::Color::Black, sf::Color::Black, 2.0f);
 }
 
 void Settings::handle_event(const sf::Vector2i& mouse_pos, const sf::Event& event) {
@@ -74,19 +69,16 @@ void Settings::update(const sf::Vector2i& mouse_pos) {
     music_button->update(mouse_pos);
     god_mode_button->update(mouse_pos);
     hitboxes_button->update(mouse_pos);
-    level_selector_button->update(mouse_pos);
 }
 
 void Settings::draw(sf::RenderWindow& window) {
     music_button->draw(window);
     god_mode_button->draw(window);
     hitboxes_button->draw(window);
-    level_selector_button->draw(window);
 }
 
 bool Settings::any_button_hovered() const {
     return (music_button && music_button->is_mouse_over()) ||
            (god_mode_button && god_mode_button->is_mouse_over()) ||
-           (hitboxes_button && hitboxes_button->is_mouse_over()) ||
-           (level_selector_button && level_selector_button->is_mouse_over());
+           (hitboxes_button && hitboxes_button->is_mouse_over());
 }

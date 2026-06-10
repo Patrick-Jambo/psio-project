@@ -3,11 +3,11 @@
 #include "../core/Utils.hpp"
 
 MainMenu::MainMenu(ResourceManager &resources) {
-    const sf::Font& main_font = resources.get_font("assets/fonts/Pixelmax-Regular.otf");
+    const sf::Font& main_font = resources.get_font("assets/fonts/Pixeled.ttf");
 
     game_title.setFont(main_font);
     game_title.setString(Config::GAME_NAME);
-    game_title.setCharacterSize(90);
+    game_title.setCharacterSize(80);
     game_title.setFillColor(sf::Color(255, 100, 0));
 
     float game_title_x = Utils::get_centered_x(game_title.getGlobalBounds().width);
@@ -15,7 +15,7 @@ MainMenu::MainMenu(ResourceManager &resources) {
     game_title.setOutlineColor(sf::Color::Black);
     game_title.setOutlineThickness(5);
 
-    play_button = std::make_unique<Button>(sf::Vector2f(0, 350), 85, "PLAY", main_font);
+    play_button = std::make_unique<Button>(sf::Vector2f(0, 350), 75, "PLAY", main_font);
 
     play_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
 

@@ -27,7 +27,6 @@ private:
     std::unique_ptr<Button> music_button;
     std::unique_ptr<Button> god_mode_button;
     std::unique_ptr<Button> hitboxes_button;
-    std::unique_ptr<Button> level_selector_button;
 
     void update_button_visuals();
 };
