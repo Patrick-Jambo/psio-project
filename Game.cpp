@@ -30,6 +30,7 @@ Game::Game() : level_map(resources) {
     game_settings = std::make_unique<Settings>(font, bg_music);
 
     level_stats_display = std::make_unique<LevelStatsDisplay>(resources);
+    game_rules = std::make_unique<GameRules>(resources);
 }
 
 void Game::run() {
@@ -54,15 +55,46 @@ void Game::handle_events() {
             game_settings->handle_event(mouse_pos, event);
         }
 
-        if (game_state == Game_state::MAIN_MENU) {
-            bool start_game = false;
-            main_menu->handle_event(mouse_pos, event, start_game);
+        switch (game_state) {
+            case Game_state::MAIN_MENU: {
+                bool start_game = false;
+                main_menu->handle_event(mouse_pos, event, start_game);
 
-            if (start_game) {
-                game_window.setMouseCursor(default_cursor);
-                init_level(current_level);
-                game_state = Game_state::PLAYING;
+                if (start_game) {
+                    game_state = Game_state::RULES;
+                }
+                break;
             }
+
+            case Game_state::RULES: {
+                bool return_to_main_menu = false;
+                bool start_playing = false;
+
+                if (game_rules) {
+                    game_rules->handle_event(event, start_playing, return_to_main_menu);
+                }
+
+                if (start_playing) {
+                    game_window.setMouseCursor(default_cursor);
+                    init_level(current_level);
+                    game_state = Game_state::PLAYING;
+                }
+
+                else if (return_to_main_menu) {
+                    game_state = Game_state::MAIN_MENU;
+                }
+                break;
+            }
+
+            case Game_state::PLAYING: {
+                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+                    // TODO: IMPLEMENT ESC TO PAUSE THE GAME
+                }
+                break;
+            }
+
+            default:
+                break;
         }
     }
 }
@@ -117,6 +149,10 @@ void Game::render() {
         main_menu->draw(game_window);
     }
 
+    if (game_state == Game_state::RULES) {
+        game_rules->draw(game_window);
+    }
+
     if (game_state == Game_state::PLAYING) {
         game_window.draw(level_map);
 
@@ -147,7 +183,7 @@ void Game::render() {
 }
 
 void Game::init_level(const int& level_num) {
-    // loads new levels
+    // loads levels
     level_time = 0.0f;
 
     std::vector<std::vector<int>> level_tiles = LevelManager::get_level(level_num);

@@ -15,6 +15,7 @@ Enemy::Enemy(sf::Vector2f start, sf::Vector2f end, float speed, ResourceManager 
     animator->add_frame_line(0,0,302,379,6,5);
     enemy_sprite.setOrigin(302 / 2.0f, 379 / 2.0f);
     setScale(0.125f, 0.125f);
+    // TODO: CHANGE ENEMY HITBOX TO BE EXACTLY 32x32
     setPosition(start_pos);
     HITBOX_HEIGHT_PCT = 0.8f;
 }

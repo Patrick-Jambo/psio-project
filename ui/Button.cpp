@@ -8,8 +8,9 @@ Button::Button(const sf::Vector2f& position, const int& character_size, const st
     text.setPosition(position);
 
     bounds.setPosition(position);
-    bounds.setSize(sf::Vector2f(text.getLocalBounds().width, text.getGlobalBounds().height * 1.5f));
     bounds.setFillColor(sf::Color::Transparent);
+
+    recalculate_bounds();
 }
 
 void Button::update(const sf::Vector2i& mouse_pos) {
@@ -42,7 +43,7 @@ void Button::draw(sf::RenderWindow& window) {
 
 void Button::set_position(const sf::Vector2f& position) {
     text.setPosition(position);
-    bounds.setPosition(position);
+    recalculate_bounds();
 }
 
 float Button::get_width() const {
@@ -51,8 +52,7 @@ float Button::get_width() const {
 
 void Button::set_text_string(const std::string& new_text) {
     text.setString(new_text);
-    // Recalculates if string length changed
-    bounds.setSize(sf::Vector2f(text.getLocalBounds().width, text.getGlobalBounds().height * 1.5f));
+    recalculate_bounds();
 }
 
 void Button::set_text_colors(const sf::Color& default_c, const sf::Color& hover_c) {
@@ -66,4 +66,18 @@ void Button::set_text_outlines(const sf::Color& default_outline, const sf::Color
     outline_hover_color = hover_outline;
     outline_thickness = thickness;
     apply_visual_state();
+    recalculate_bounds();
+}
+
+void Button::recalculate_bounds() {
+    sf::FloatRect text_rect = text.getGlobalBounds();
+
+    float padding_x = 10.0f;
+    float padding_y = 5.0f;
+
+    bounds.setPosition(text_rect.left - padding_x, text_rect.top - padding_y);
+    bounds.setSize(sf::Vector2f(text_rect.width + (padding_x * 2.0f), text_rect.height + (padding_y * 2.0f)));
+
+    // --DEBUG--
+    // bounds.setFillColor(sf::Color(255, 0, 255, 100));
 }

@@ -10,6 +10,7 @@
 #include "objects/Collectible.hpp"
 #include "areas/Area.hpp"
 #include "ui/LevelStatsDisplay.hpp"
+#include "ui/GameRules.hpp"
 #include <memory>
 
 class Game {
@@ -35,6 +36,7 @@ private:
 
     enum class Game_state {
         MAIN_MENU,
+        RULES,
         END_MENU,
         PLAYING,
         PAUSED
@@ -48,6 +50,7 @@ private:
     Game_state game_state = Game_state::MAIN_MENU;
 
     std::unique_ptr<MainMenu> main_menu;
+    std::unique_ptr<GameRules> game_rules;
     std::unique_ptr<Player> player;
     std::unique_ptr<Settings> game_settings;
     std::unique_ptr<LevelStatsDisplay> level_stats_display;

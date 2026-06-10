@@ -31,4 +31,5 @@ private:
     float outline_thickness = 0.0f;
 
     void apply_visual_state();
+    void recalculate_bounds();
 };
