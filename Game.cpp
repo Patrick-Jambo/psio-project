@@ -2,6 +2,7 @@
 #include "ui/Button.hpp"
 #include "core/Config.hpp"
 #include "core/LevelManager.hpp"
+#include <iostream>
 
 
 Game::Game() : level_map(resources) {
@@ -138,6 +139,8 @@ void Game::init_level(const int& level_num) {
     // enemies and leaves
     enemies = LevelManager::get_level_enemies(level_num, resources);
     collectibles = LevelManager::get_level_collectibles(level_num, resources);
+
+    areas = LevelManager::get_level_areas(level_num);
 }
 
 void Game::check_game_collisions() {
@@ -156,5 +159,25 @@ void Game::check_game_collisions() {
         if (player_hitbox.intersects(collectible->get_hitbox()) && !collectible->is_collected()) {
             collectible->collect();
         }
+    }
+
+    for (auto& area : areas) {
+        if (player_hitbox.intersects(area->get_bounds())) {
+            area->on_enter(*this);
+        }
+    }
+}
+
+void Game::advance_level() {
+    current_level++;
+
+    std::vector<std::vector<int>> next_level_tiles = LevelManager::get_level(current_level);
+
+    if (next_level_tiles.empty()) {
+        game_state = Game_state::MAIN_MENU;
+        current_level = 1;
+    } else {
+        std::cout << "LOADING LEVEL: " << current_level << std::endl;
+        init_level(current_level);
     }
 }

@@ -8,12 +8,15 @@
 #include "core/TileMap.hpp"
 #include "objects/Enemy.hpp"
 #include "objects/Collectible.hpp"
+#include "areas/Area.hpp"
 #include <memory>
 
 class Game {
 public:
     Game();
     void run();
+    Player& get_player() { return *player; }
+    void advance_level();
 
 private:
     void handle_events();
@@ -45,6 +48,7 @@ private:
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Collectible>> collectibles;
     std::unique_ptr<Settings> game_settings;
+    std::vector<std::unique_ptr<Area>> areas;
 
     void check_game_collisions();
 

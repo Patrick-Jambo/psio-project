@@ -4,6 +4,8 @@
 #include <cmath>
 
 Player::Player(sf::Vector2f start_pos, ResourceManager& resources) {
+    set_respawn_position(start_pos);
+
     const sf::Texture& player_texture = resources.get_texture("assets/img/player.png");
     player_sprite.setTexture(player_texture);
 

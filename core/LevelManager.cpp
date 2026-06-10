@@ -1,4 +1,7 @@
 #include "LevelManager.hpp"
+#include "../areas/Area.hpp"
+#include "../areas/CheckpointArea.hpp"
+#include "../areas/GoalArea.hpp"
 
 std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
     switch (level_num) {
@@ -131,4 +134,18 @@ std::vector<std::vector<int>> LevelManager::create_level_1() {
 
 std::vector<std::vector<int>> LevelManager::create_level_2() {
     return create_level_1();
+}
+
+std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& level_num) {
+    std::vector<std::unique_ptr<Area>> level_areas;
+
+    switch (level_num) {
+        case 1:
+            break;
+
+        default:
+            break;
+    }
+
+    return level_areas;
 }
