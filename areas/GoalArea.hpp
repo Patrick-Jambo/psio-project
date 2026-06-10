@@ -4,8 +4,9 @@
 
 class GoalArea : public Area {
 public:
-    GoalArea(const sf::FloatRect& bounds) : Area(bounds) {}
+    GoalArea(const sf::FloatRect& bounds);
 
     void on_enter(Game& game) override;
+    void debug_hitbox() override;
 };
 

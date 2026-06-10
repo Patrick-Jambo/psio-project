@@ -122,6 +122,10 @@ void Game::render() {
         if (game_settings) {
             game_settings->draw(game_window);
         }
+
+        for (auto& area : areas) {
+            game_window.draw(*area);
+        }
     }
 
     game_window.display();
