@@ -12,13 +12,18 @@ Game::Game() : level_map(resources) {
         Config::GAME_NAME,
         sf::Style::Titlebar | sf::Style::Close
     );
+
+    SaveManager::load("assets/data/levels_data.json");
+
     game_window.setFramerateLimit(Config::GAME_FRAME_RATE);
 
     main_menu = std::make_unique<MainMenu>(resources);
 
     if (bg_music.openFromFile("assets/music/game_loop.mp3")) {
         bg_music.setLoop(true);
-        bg_music.play();
+        if (Settings::music_enabled) {
+            bg_music.play();
+        }
     }
 
     if (default_cursor.loadFromSystem(sf::Cursor::Arrow)) {
@@ -31,6 +36,8 @@ Game::Game() : level_map(resources) {
 
     level_stats_display = std::make_unique<LevelStatsDisplay>(resources);
     game_rules = std::make_unique<GameRules>(resources);
+    level_transition = std::make_unique<LevelTransition>(resources);
+
 }
 
 void Game::run() {
@@ -48,6 +55,8 @@ void Game::handle_events() {
 
     while (game_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
+            SaveManager::save_settings();
+            SaveManager::save();
             game_window.close();
         }
 
@@ -76,8 +85,11 @@ void Game::handle_events() {
 
                 if (start_playing) {
                     game_window.setMouseCursor(default_cursor);
-                    init_level(current_level);
-                    game_state = Game_state::PLAYING;
+
+                    std::string text_from_json = SaveManager::get_intertitle(current_level);
+                    level_transition->start(text_from_json);
+
+                    game_state = Game_state::TRANSITION;
                 }
 
                 else if (return_to_main_menu) {
@@ -125,6 +137,13 @@ void Game::update(float dt) {
         }
     }
 
+    if (game_state == Game_state::TRANSITION) {
+        if (level_transition->update(dt)) {
+            init_level(current_level);
+            game_state = Game_state::PLAYING;
+        }
+    }
+
     bool need_hand_cursor = false;
 
     if (game_settings && game_settings->any_button_hovered()) {
@@ -151,6 +170,10 @@ void Game::render() {
 
     if (game_state == Game_state::RULES) {
         game_rules->draw(game_window);
+    }
+
+    if (game_state == Game_state::TRANSITION) {
+        level_transition->draw(game_window);
     }
 
     if (game_state == Game_state::PLAYING) {
@@ -230,6 +253,7 @@ void Game::check_game_collisions() {
 }
 
 void Game::advance_level() {
+    SaveManager::update_best_time(current_level,level_time);
     current_level++;
 
     std::vector<std::vector<int>> next_level_tiles = LevelManager::get_level(current_level);
@@ -238,7 +262,10 @@ void Game::advance_level() {
         game_state = Game_state::MAIN_MENU;
         current_level = 1;
     } else {
-        std::cout << "LOADING LEVEL: " << current_level << std::endl;
-        init_level(current_level);
+        std::cout << "PREPARING LEVEL: " << current_level << std::endl;
+        std::string text_from_json = SaveManager::get_intertitle(current_level);
+        level_transition->start(text_from_json);
+
+        game_state = Game_state::TRANSITION;
     }
 }

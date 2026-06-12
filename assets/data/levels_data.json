@@ -1,57 +1,31 @@
 {
-  "1": {
-    "intertitle_text": "You don't stand a chance.",
-    "save_1": {
-      "best_time": -1,
-      "completed": false
+    "1": {
+        "best_time": 5.42,
+        "intertitle_text": "YOU DON'T STAND A CHANCE."
     },
-    "save_2": {
-      "best_time": -1,
-      "completed": false
-    }
-  },
-  "2": {
-    "intertitle_text": "Slow and steady wins the... oh wait, you died.",
-    "save_1": {
-      "best_time": -1,
-      "completed": false
+    "2": {
+        "best_time": -1,
+        "intertitle_text": "SLOW AND STEADY WINS THE...\n          OH WAIT, YOU DIED."
     },
-    "save_2": {
-      "best_time": -1,
-      "completed": false
-    }
-  },
-  "3": {
-    "intertitle_text": "Get ready for the double trouble.",
-    "save_1": {
-      "best_time": -1,
-      "completed": false
+    "3": {
+        "best_time": -1,
+        "intertitle_text": "GET READY FOR THE DOUBLE TROUBLE."
     },
-    "save_2": {
-      "best_time": -1,
-      "completed": false
-    }
-  },
-  "4": {
-    "intertitle_text": "This is where it actually gets hard.",
-    "save_1": {
-      "best_time": -1,
-      "completed": false
+    "4": {
+        "best_time": -1,
+        "intertitle_text": "THIS IS WHERE IT ACTUALLY GETS HARD."
     },
-    "save_2": {
-      "best_time": -1,
-      "completed": false
-    }
-  },
-  "5": {
-    "intertitle_text": "The final stretch!",
-    "save_1": {
-      "best_time": -1,
-      "completed": false
+    "5": {
+        "best_time": -1,
+        "intertitle_text": "THE FINAL STRETCH!"
     },
-    "save_2": {
-      "best_time": -1,
-      "completed": false
+    "global_stats": {
+        "best_time": -1,
+        "death_record": -1
+    },
+    "settings": {
+        "god_mode_enabled": false,
+        "hitboxes_enabled": false,
+        "music_enabled": true
     }
-  }
 }

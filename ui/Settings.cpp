@@ -12,13 +12,18 @@ Settings::Settings(const sf::Font& font, sf::Music& bg_music) : music_ref(bg_mus
     float pos_y = 15.0f;     // top margin
     float spacing = 80.0f;   // gap between
 
-    music_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, "MUSIC: ON", font);
+    // --- DOPASOWANIE NAPISÓW DO ZAOBSERWOWANEGO STANU Z JSON ---
+    std::string music_txt = Settings::music_enabled ? "MUSIC: ON" : "MUSIC: OFF";
+    std::string god_txt = Settings::god_mode_enabled ? "GOD MODE: ON" : "GOD MODE: OFF";
+    std::string hit_txt = Settings::hitboxes_enabled ? "HITBOXES: ON" : "HITBOXES: OFF";
+
+    music_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, music_txt, font);
     current_x += music_button->get_width() + spacing;
 
-    god_mode_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, "GOD MODE: OFF", font);
+    god_mode_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, god_txt, font);
     current_x += god_mode_button->get_width() + spacing;
 
-    hitboxes_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, "HITBOXES: OFF", font);
+    hitboxes_button = std::make_unique<Button>(sf::Vector2f(current_x, pos_y), char_size, hit_txt, font);
     current_x += hitboxes_button->get_width() + spacing;
 
     music_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
@@ -29,6 +34,10 @@ Settings::Settings(const sf::Font& font, sf::Music& bg_music) : music_ref(bg_mus
 
     hitboxes_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
     hitboxes_button->set_text_outlines(sf::Color::Black, sf::Color::Black, 2.0f);
+
+    if (!Settings::music_enabled) {
+        music_button->set_text_colors(sf::Color::White, sf::Color::Red);
+    }
 }
 
 void Settings::handle_event(const sf::Vector2i& mouse_pos, const sf::Event& event) {

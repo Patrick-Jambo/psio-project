@@ -11,6 +11,8 @@
 #include "areas/Area.hpp"
 #include "ui/LevelStatsDisplay.hpp"
 #include "ui/GameRules.hpp"
+#include "ui/LevelTransition.hpp"
+#include "core/SaveManager.hpp"
 #include <memory>
 
 class Game {
@@ -37,6 +39,7 @@ private:
     enum class Game_state {
         MAIN_MENU,
         RULES,
+        TRANSITION,
         END_MENU,
         PLAYING,
         PAUSED
@@ -54,6 +57,7 @@ private:
     std::unique_ptr<Player> player;
     std::unique_ptr<Settings> game_settings;
     std::unique_ptr<LevelStatsDisplay> level_stats_display;
+    std::unique_ptr<LevelTransition> level_transition;
 
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Collectible>> collectibles;
