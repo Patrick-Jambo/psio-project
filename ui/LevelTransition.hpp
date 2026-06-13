@@ -14,5 +14,5 @@ private:
     sf::Text display_text;
     sf::RectangleShape background;
     float timer = 0.0f;
-    const float DURATION = 1.25f;
+    const float DURATION = 1.0f;
 };

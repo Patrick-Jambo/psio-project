@@ -7,6 +7,7 @@ std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
     switch (level_num) {
         case 1: return create_level_1();
         case 2: return create_level_2();
+        case 3: return create_level_3();
         default: return {{}};
     }
 }
@@ -60,9 +61,85 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
                 sf::Vector2f(352.0f, 480.0f),
                 e1_speed, resources
             ));
+            break;
+        }
+        case 2: {
+            constexpr float enemy_speed = 275.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 4 + 32, 64 * 3 + 32),
+                sf::Vector2f(64 * 4 + 32, 64 * 3 + 32 + 64 * 5),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 5 + 32, 64 * 3 + 32 + 64 * 5),
+                sf::Vector2f(64 * 5 + 32, 64 * 3 + 32),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 6 + 32, 64 * 3 + 32),
+                sf::Vector2f(64 * 6 + 32, 64 * 3 + 32 + 64 * 5),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 7 + 32, 64 * 3 + 32 + 64 * 5),
+                sf::Vector2f(64 * 7 + 32, 64 * 3 + 32),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 8 + 32, 64 * 3 + 32),
+                sf::Vector2f(64 * 8 + 32, 64 * 3 + 32 + 64 * 5),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 9 + 32, 64 * 3 + 32 + 64 * 5),
+                sf::Vector2f(64 * 9 + 32, 64 * 3 + 32),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 10 + 32, 64 * 3 + 32),
+                sf::Vector2f(64 * 10 + 32, 64 * 3 + 32 + 64 * 5),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 11 + 32, 64 * 3 + 32 + 64 * 5),
+                sf::Vector2f(64 * 11 + 32, 64 * 3 + 32),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 12 + 32, 64 * 3 + 32),
+                sf::Vector2f(64 * 12 + 32, 64 * 3 + 32 + 64 * 5),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 13 + 32, 64 * 3 + 32 + 64 * 5),
+                sf::Vector2f(64 * 13 + 32, 64 * 3 + 32),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 14 + 32, 64 * 3 + 32),
+                sf::Vector2f(64 * 14 + 32, 64 * 3 + 32 + 64 * 5),
+                enemy_speed, resources
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 15 + 32, 64 * 3 + 32 + 64 * 5),
+                sf::Vector2f(64 * 15 + 32, 64 * 3 + 32),
+                enemy_speed, resources
+            ));
 
             break;
         }
+
         default:
             break;
     }
@@ -75,7 +152,9 @@ std::vector<std::unique_ptr<Collectible>> LevelManager::get_level_collectibles(c
 
     switch (level_num) {
         case 1:
-
+            return {};
+        case 2:
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 10, 64 * 6),resources));
         default:
             break;
     }
@@ -92,7 +171,7 @@ std::vector<std::vector<int>> LevelManager::create_level_1() {
     // 13x - Dirt tunel   | 23x - Dark tunel       | 33x - Area tunel
     // Końcówki 'x' (rotacja): 0 = góra/TL, 1 = prawo/TR, 2 = dół/BR, 3 = lewo/BL
 
-    std::vector<std::vector<int>> first = {
+    std::vector<std::vector<int>> level_1 = {
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
@@ -106,7 +185,7 @@ std::vector<std::vector<int>> LevelManager::create_level_1() {
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
     };
-    return first;
+    return level_1;
 }
 
 std::vector<std::vector<int>> LevelManager::create_level_2() {
@@ -127,12 +206,34 @@ std::vector<std::vector<int>> LevelManager::create_level_2() {
     return level_2;
 }
 
+std::vector<std::vector<int> > LevelManager::create_level_3() {
+    std::vector<std::vector<int>> level_3 = {
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+        {3,320,310,110,210,110,210,110,210,110,210,110,210,110,210,110,210,110,221,3},//początek ramka o 1 mniejsza od orginału
+        {3,323,312,20,10,20,10,20,10,20,10,20,10,20,10,20,10,20,111,3},
+        {3,3,3,113,20,10,20,10,20,10,20,10,20,10,20,10,20,10,211,3},
+        {3,3,3,223,112,212,112,212,112,212,112,212,112,212,112,20,10,20,111,3},
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,313,30,30,311,3},
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,313,30,30,311,3},
+        {3,3,3,120,210,110,210,110,210,110,210,110,210,110,210,10,20,10,211,3},
+        {3,3,3,213,10,20,10,20,10,20,10,20,10,20,10,20,10,20,111,3},
+        {3,320,310,10,20,10,20,10,20,10,20,10,20,10,20,10,20,10,211,3},
+        {3,323,312,212,112,212,112,212,112,212,112,212,112,212,112,212,112,212,122,3},
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
+    };
+    return level_3;
+}
+
 std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& level_num) {
     std::vector<std::unique_ptr<Area>> level_areas;
 
     switch (level_num) {
         case 1:
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*16,64*3,64*3,64*6)));
+            break;
+
+        case 2:
+            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*16,64*5,64*3,64*2)));
             break;
 
         default:

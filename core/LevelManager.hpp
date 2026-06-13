@@ -17,4 +17,5 @@ public:
 private:
     static std::vector<std::vector<int>> create_level_1();
     static std::vector<std::vector<int>> create_level_2();
+    static std::vector<std::vector<int>> create_level_3();
 };

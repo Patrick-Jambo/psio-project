@@ -8,11 +8,7 @@ Collectible::Collectible(sf::Vector2f pos, ResourceManager& resources) {
     sprite.setOrigin(293.0f / 2.0f, 347.0f / 2.0f);
 
     sprite.setTextureRect(sf::IntRect(0,0,293,347));
-    setScale(0.2f, 0.2f);
-
-    HITBOX_WIDTH_PCT = 1.05f;
-    HITBOX_HEIGHT_PCT = 0.87f;
-
+    setScale(0.109f, 0.092f);
     setPosition(pos);
 }
 
