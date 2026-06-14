@@ -3,7 +3,6 @@
 
 LevelTransition::LevelTransition(ResourceManager& resources) {
     display_text.setFont(resources.get_font("assets/fonts/Pixeled.ttf"));
-    //display_text.setCharacterSize(100);
     display_text.setCharacterSize(32);
     display_text.setFillColor(sf::Color::White);
 

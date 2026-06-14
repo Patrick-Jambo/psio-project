@@ -4,11 +4,11 @@
         "intertitle_text": "YOU DON'T STAND A CHANCE."
     },
     "2": {
-        "best_time": 12.56,
+        "best_time": 2.18,
         "intertitle_text": "SLOW AND STEADY WINS THE...\n          OH WAIT, YOU DIED."
     },
     "3": {
-        "best_time": -1,
+        "best_time": 5.08,
         "intertitle_text": "GET READY FOR THE DOUBLE TROUBLE."
     },
     "4": {
@@ -20,12 +20,12 @@
         "intertitle_text": "THE FINAL STRETCH!"
     },
     "global_stats": {
-        "best_time": -1,
-        "death_record": -1
+        "best_time": 11.35413932800293,
+        "death_record": 0
     },
     "settings": {
         "god_mode_enabled": true,
-        "hitboxes_enabled": true,
+        "hitboxes_enabled": false,
         "music_enabled": true
     }
 }

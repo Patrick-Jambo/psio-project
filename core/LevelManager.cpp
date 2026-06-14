@@ -8,7 +8,7 @@ std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
         case 1: return create_level_1();
         case 2: return create_level_2();
         case 3: return create_level_3();
-        default: return {{}};
+        default: return {};
     }
 }
 
@@ -22,6 +22,11 @@ sf::Vector2f LevelManager::get_player_start_pos(const int& level_num) {
         case 2:
             player_start_pos.x = 64 * 2;
             player_start_pos.y = 64 * 6;
+            break;
+
+        case 3:
+            player_start_pos.x = 64 * 2;
+            player_start_pos.y = 64 * 2;
             break;
 
         default:
@@ -140,6 +145,17 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
 
+        case 3: {
+            constexpr float enemy_speed = 200.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                sf::Vector2f(64 * 15 + 32, 64 * 3 + 32 + 64 * 5),
+                sf::Vector2f(64 * 15 + 32, 64 * 3 + 32),
+                enemy_speed, resources
+            ));
+        }
+
+
+
         default:
             break;
     }
@@ -224,7 +240,7 @@ std::vector<std::vector<int> > LevelManager::create_level_3() {
     return level_3;
 }
 
-std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& level_num) {
+std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& level_num, ResourceManager& resources) {
     std::vector<std::unique_ptr<Area>> level_areas;
 
     switch (level_num) {
@@ -235,6 +251,13 @@ std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& leve
         case 2:
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*16,64*5,64*3,64*2)));
             break;
+
+        case 3: {
+            sf::FloatRect c_point_pos = sf::FloatRect(64*15,64*5,64*4,64*2);
+            sf::Vector2f res_pos = sf::Vector2f(64*17, 64*6);
+            level_areas.emplace_back(std::make_unique<CheckpointArea>(c_point_pos,res_pos,resources));
+            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*1,64*9,64*2,64*2)));
+        }
 
         default:
             break;

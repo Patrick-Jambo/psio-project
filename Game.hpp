@@ -13,6 +13,7 @@
 #include "ui/GameRules.hpp"
 #include "ui/LevelTransition.hpp"
 #include "core/SaveManager.hpp"
+#include "ui/EndGameScreen.hpp"
 #include <memory>
 
 class Game {
@@ -27,6 +28,7 @@ private:
     void update(float dt);
     void render();
     void init_level(const int& level_num);
+    void render_pause_screen();
 
     sf::Clock game_clock;
     ResourceManager resources;
@@ -48,6 +50,7 @@ private:
     int current_level = 1;
     int death_counter = 0;
     float level_time = 0.0f;
+    float total_game_time = 0.0f;
 
     TileMap level_map;
     Game_state game_state = Game_state::MAIN_MENU;
@@ -58,6 +61,7 @@ private:
     std::unique_ptr<Settings> game_settings;
     std::unique_ptr<LevelStatsDisplay> level_stats_display;
     std::unique_ptr<LevelTransition> level_transition;
+    std::unique_ptr<EndGameScreen> end_game_screen;
 
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Collectible>> collectibles;

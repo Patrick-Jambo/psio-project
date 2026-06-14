@@ -3,6 +3,8 @@
 #include "core/Config.hpp"
 #include "core/LevelManager.hpp"
 #include "ui/LevelStatsDisplay.hpp"
+#include "areas/CheckpointArea.hpp"
+#include "core/Utils.hpp"
 #include <iostream>
 
 
@@ -37,6 +39,7 @@ Game::Game() : level_map(resources) {
     level_stats_display = std::make_unique<LevelStatsDisplay>(resources);
     game_rules = std::make_unique<GameRules>(resources);
     level_transition = std::make_unique<LevelTransition>(resources);
+    end_game_screen = std::make_unique<EndGameScreen>(resources);
 
 }
 
@@ -100,7 +103,30 @@ void Game::handle_events() {
 
             case Game_state::PLAYING: {
                 if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
-                    // TODO: IMPLEMENT ESC TO PAUSE THE GAME
+                    game_state = Game_state::PAUSED;
+                }
+                break;
+            }
+
+            case Game_state::PAUSED: {
+                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+                    game_state = Game_state::PLAYING;
+                }
+                break;
+            }
+
+            case Game_state::END_MENU: {
+                bool return_to_menu = false;
+                if (end_game_screen) {
+                    end_game_screen->handle_event(event, return_to_menu);
+                }
+
+                if (return_to_menu) {
+                    // full game reset
+                    current_level = 1;
+                    death_counter = 0;
+                    total_game_time = 0.0f;
+                    game_state = Game_state::MAIN_MENU;
                 }
                 break;
             }
@@ -124,11 +150,20 @@ void Game::update(float dt) {
 
     if (game_state == Game_state::PLAYING) {
         level_time+=dt;
+        total_game_time+=dt;
         player->update(dt, level_map);
 
         for (auto& enemy : enemies) enemy->update(dt, level_map);
 
         for (auto& collectible : collectibles) collectible->update(dt, level_map);
+
+        for (auto& area : areas) {
+            // Próbujemy rzutować Area na CheckpointArea
+            auto* checkpoint = dynamic_cast<CheckpointArea*>(area.get());
+            if (checkpoint) {
+                checkpoint->update(dt);
+            }
+        }
 
         check_game_collisions();
 
@@ -161,45 +196,52 @@ void Game::update(float dt) {
     }
 }
 
+void Game::render_pause_screen() {
+    sf::RectangleShape pause_overlay(sf::Vector2f(Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT));
+    pause_overlay.setFillColor(sf::Color(0, 0, 0, 150));
+    game_window.draw(pause_overlay);
+
+    const sf::Font& font = resources.get_font("assets/fonts/Pixeled.ttf");
+    sf::Text pause_text;
+    pause_text.setFont(font);
+    pause_text.setString("PAUSED");
+    pause_text.setCharacterSize(70);
+    pause_text.setFillColor(sf::Color::White);
+    pause_text.setOutlineColor(sf::Color::Black);
+    pause_text.setOutlineThickness(4.0f);
+
+    float text_x = Utils::get_centered_x(pause_text.getGlobalBounds().width);
+    float text_y = (Config::WINDOW_HEIGHT / 2.0f) - (pause_text.getGlobalBounds().height / 2.0f);
+    pause_text.setPosition(text_x, text_y);
+
+    game_window.draw(pause_text);
+}
+
 void Game::render() {
     game_window.clear(sf::Color(177, 179, 249));
 
-    if (game_state == Game_state::MAIN_MENU) {
-        main_menu->draw(game_window);
-    }
+    if (game_state == Game_state::MAIN_MENU)  main_menu->draw(game_window);
+    if (game_state == Game_state::RULES)      game_rules->draw(game_window);
+    if (game_state == Game_state::TRANSITION) level_transition->draw(game_window);
 
-    if (game_state == Game_state::RULES) {
-        game_rules->draw(game_window);
-    }
-
-    if (game_state == Game_state::TRANSITION) {
-        level_transition->draw(game_window);
-    }
-
-    if (game_state == Game_state::PLAYING) {
+    if (game_state == Game_state::PLAYING || game_state == Game_state::PAUSED) {
         game_window.draw(level_map);
 
-        for (auto& collectible : collectibles) {
-            game_window.draw(*collectible);
-        }
-
-        for (auto& enemy : enemies) {
-            game_window.draw(*enemy);
-        }
-
+        for (auto& area : areas) game_window.draw(*area);
+        for (auto& collectible : collectibles) game_window.draw(*collectible);
+        for (auto& enemy : enemies) game_window.draw(*enemy);
         game_window.draw(*player);
 
-        if (game_settings) {
-            game_settings->draw(game_window);
-        }
+        if (game_settings) game_settings->draw(game_window);
+        if (level_stats_display) level_stats_display->draw(game_window);
 
-        for (auto& area : areas) {
-            game_window.draw(*area);
+        if (game_state == Game_state::PAUSED) {
+            render_pause_screen();
         }
+    }
 
-        if (level_stats_display) {
-            level_stats_display->draw(game_window);
-        }
+    if (game_state == Game_state::END_MENU) {
+        if (end_game_screen) end_game_screen->draw(game_window);
     }
 
     game_window.display();
@@ -222,7 +264,7 @@ void Game::init_level(const int& level_num) {
     enemies = LevelManager::get_level_enemies(level_num, resources);
     collectibles = LevelManager::get_level_collectibles(level_num, resources);
 
-    areas = LevelManager::get_level_areas(level_num);
+    areas = LevelManager::get_level_areas(level_num,resources);
 }
 
 void Game::check_game_collisions() {
@@ -233,7 +275,7 @@ void Game::check_game_collisions() {
             if (player_hitbox.intersects(enemy->get_hitbox())) {
                 death_counter++;
                 //TODO: ADD DEATH ANIMATION
-                player->setPosition(LevelManager::get_player_start_pos(current_level));
+                player->respawn();
                 return;
             }
         }
@@ -259,8 +301,29 @@ void Game::advance_level() {
     std::vector<std::vector<int>> next_level_tiles = LevelManager::get_level(current_level);
 
     if (next_level_tiles.empty()) {
-        game_state = Game_state::MAIN_MENU;
-        current_level = 1;
+        std::cout << "GAME COMPLETED! CHANGING TO END GAME SCREEN..." << std::endl;
+
+        bool is_new_death_record = false;
+        bool is_new_time_record = false;
+
+        SaveManager::update_global_records(death_counter, total_game_time, is_new_death_record, is_new_time_record);
+
+        int best_deaths = SaveManager::get_global_death_record();
+        float best_time = SaveManager::get_global_time_record();
+
+        const sf::Font& font = resources.get_font("assets/fonts/Pixeled.ttf");
+        if (end_game_screen) {
+            end_game_screen->setup_final_scores(
+                font,
+                death_counter,
+                total_game_time,
+                is_new_death_record,
+                is_new_time_record,
+                best_deaths,
+                best_time
+            );
+        }
+        game_state = Game_state::END_MENU;
     } else {
         std::cout << "PREPARING LEVEL: " << current_level << std::endl;
         std::string text_from_json = SaveManager::get_intertitle(current_level);

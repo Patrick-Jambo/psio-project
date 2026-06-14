@@ -71,3 +71,28 @@ void SaveManager::save_settings() {
     save_data["settings"]["god_mode_enabled"] = Settings::god_mode_enabled;
     save_data["settings"]["hitboxes_enabled"] = Settings::hitboxes_enabled;
 }
+
+void SaveManager::update_global_records(int final_deaths, float final_time, bool& new_death_rec, bool& new_time_rec) {
+    int old_death_record = save_data["global_stats"].value("death_record", -1);
+
+    if (old_death_record == -1 || final_deaths < old_death_record) {
+        save_data["global_stats"]["death_record"] = final_deaths;
+        new_death_rec = true;
+    } else {
+        new_death_rec = false;
+    }
+
+    float old_time_record = save_data["global_stats"].value("best_time", -1.0f);
+
+    if (old_time_record == -1.0f || final_time < old_time_record) {
+        save_data["global_stats"]["best_time"] = final_time;
+        new_time_rec = true;
+    } else {
+        new_time_rec = false;
+    }
+
+    save();
+}
+
+int SaveManager::get_global_death_record() { return save_data["global_stats"].value("death_record", -1); }
+float SaveManager::get_global_time_record() { return save_data["global_stats"].value("best_time", -1.0f); }
