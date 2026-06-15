@@ -41,30 +41,30 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
 
     switch (level_num) {
         case 1: {
-            float e1_speed = 400.0f;
+            float enemy_speed = 400.0f;
 
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 sf::Vector2f(352.0f, 288.0f),
                 sf::Vector2f(928.0f, 288.0f),
-                e1_speed, resources
+                enemy_speed, resources
             ));
 
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 sf::Vector2f(352.0f, 416.0f),
                 sf::Vector2f(928.0f, 416.0f),
-                e1_speed, resources
+                enemy_speed, resources
             ));
 
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 sf::Vector2f(928.0f, 352.0f),
                 sf::Vector2f(352.0f, 352.0f),
-                e1_speed, resources
+                enemy_speed, resources
             ));
 
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 sf::Vector2f(928.0f, 480.0f),
                 sf::Vector2f(352.0f, 480.0f),
-                e1_speed, resources
+                enemy_speed, resources
             ));
             break;
         }
