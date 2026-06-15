@@ -20,13 +20,17 @@ Enemy::Enemy(std::vector<sf::Vector2f> pts, float speed, ResourceManager &resour
 }
 
 
-Enemy::Enemy(sf::Vector2f center, float radius, float angular_speed, ResourceManager& resources) {
+Enemy::Enemy(sf::Vector2f center, float radius, float angular_speed, ResourceManager& resources, float start_angle) {
     center_pos = center;
     this->radius = radius;
     speed = angular_speed;
     move_mode = EnemyMoveMode::Circular;
+    current_angle = start_angle; // Ustawienie kąta początkowego
 
-    setPosition(sf::Vector2f(center.x + radius, center.y));
+    // Obliczenie pozycji startowej na podstawie kąta
+    float start_x = center_pos.x + radius * std::cos(current_angle);
+    float start_y = center_pos.y + radius * std::sin(current_angle);
+    setPosition(sf::Vector2f(start_x, start_y));
 
     const sf::Texture& texture = resources.get_texture("assets/img/enemy.png");
     enemy_sprite.setTexture(texture);

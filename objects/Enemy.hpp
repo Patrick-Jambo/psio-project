@@ -13,11 +13,8 @@ enum class EnemyMoveMode {
 
 class Enemy : public Entity {
 public:
-    // Konstruktor dla trybów liniowych (PingPong i Path)
     Enemy(std::vector<sf::Vector2f> waypoints, float speed, ResourceManager& resources, EnemyMoveMode mode = EnemyMoveMode::PingPong);
-
-    // Konstruktor dla trybu kołowego (Circular)
-    Enemy(sf::Vector2f center, float radius, float angular_speed, ResourceManager& resources);
+    Enemy(sf::Vector2f center, float radius, float angular_speed, ResourceManager& resources, float start_angle = 0.0f);
 
     ~Enemy() override = default;
 
@@ -32,7 +29,7 @@ private:
     // Zmienne dla PingPong i Path
     std::vector<sf::Vector2f> waypoints;
     size_t current_target_idx = 0;
-    int direction_step = 1; // Określa kierunek iteracji (1 w przód, -1 w tył)
+    int direction_step = 1;
 
     // Zmienne dla Circular
     sf::Vector2f center_pos;
