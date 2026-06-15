@@ -18,4 +18,8 @@ private:
     static std::vector<std::vector<int>> create_level_1();
     static std::vector<std::vector<int>> create_level_2();
     static std::vector<std::vector<int>> create_level_3();
+    static std::vector<std::vector<int>> create_level_4();
+    static std::vector<std::vector<int>> create_level_5();
+    static std::vector<std::vector<int>> create_level_6();
+    static std::vector<std::vector<int>> create_level_7();
 };

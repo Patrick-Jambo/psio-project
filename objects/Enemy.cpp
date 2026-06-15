@@ -2,45 +2,96 @@
 #include <cmath>
 #include "../ui/Settings.hpp"
 
-Enemy::Enemy(sf::Vector2f start, sf::Vector2f end, float speed, ResourceManager &resources) {
-    start_pos = start;
-    end_pos = end;
-    target_pos = end;
+
+Enemy::Enemy(std::vector<sf::Vector2f> pts, float speed, ResourceManager &resources, EnemyMoveMode mode) {
+    waypoints = std::move(pts);
     this->speed = speed;
+    move_mode = mode;
+
+    if (!waypoints.empty()) setPosition(waypoints[0]);
+    if (waypoints.size() > 1) current_target_idx = 1;
 
     const sf::Texture& texture = resources.get_texture("assets/img/enemy.png");
     enemy_sprite.setTexture(texture);
-
     animator = std::make_unique<Animation>(enemy_sprite);
     animator->add_frame_line(0,0,200,200,9,5);
     enemy_sprite.setOrigin(200 / 2.0f, 200 / 2.0f);
     setScale(0.16f, 0.16f);
-    setPosition(start_pos);
+}
+
+
+Enemy::Enemy(sf::Vector2f center, float radius, float angular_speed, ResourceManager& resources) {
+    center_pos = center;
+    this->radius = radius;
+    speed = angular_speed;
+    move_mode = EnemyMoveMode::Circular;
+
+    setPosition(sf::Vector2f(center.x + radius, center.y));
+
+    const sf::Texture& texture = resources.get_texture("assets/img/enemy.png");
+    enemy_sprite.setTexture(texture);
+    animator = std::make_unique<Animation>(enemy_sprite);
+    animator->add_frame_line(0,0,200,200,9,5);
+    enemy_sprite.setOrigin(200 / 2.0f, 200 / 2.0f);
+    setScale(0.16f, 0.16f);
 }
 
 void Enemy::update(float dt, const TileMap &level_map) {
-    sf::Vector2f current_pos = getPosition();
     animator->update(dt);
 
-    sf::Vector2f direction = target_pos - current_pos;
-    float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    switch (move_mode) {
+        case EnemyMoveMode::PingPong:
+        case EnemyMoveMode::Path: {
+            if (waypoints.size() < 2) return;
 
-    if (distance > 0.0f) {
-        direction /= distance;
+            sf::Vector2f current_pos = getPosition();
+            sf::Vector2f target_pos = waypoints[current_target_idx];
+            sf::Vector2f direction = target_pos - current_pos;
+            float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-        float move_dist = speed * dt;
+            if (distance > 0.0f) {
+                float move_dist = speed * dt;
 
-        if (move_dist >= distance) {
-            setPosition(target_pos);
-            target_pos = (target_pos == end_pos) ? start_pos : end_pos;
-        } else {
-            move(direction * move_dist);
+                if (move_dist >= distance) {
+                    setPosition(target_pos);
+
+                    if (move_mode == EnemyMoveMode::Path) {
+                        current_target_idx = (current_target_idx + 1) % waypoints.size();
+                    } else {
+                        if (current_target_idx == waypoints.size() - 1) {
+                            direction_step = -1;
+                        } else if (current_target_idx == 0) {
+                            direction_step = 1;
+                        }
+                        current_target_idx += direction_step;
+                    }
+                } else {
+                    move((direction / distance) * move_dist);
+                }
+            }
+            break;
+        }
+
+        case EnemyMoveMode::Circular: {
+            current_angle += speed * dt;
+
+            if (current_angle > 6.2831853f) current_angle -= 6.2831853f;
+
+            float new_x = center_pos.x + radius * std::cos(current_angle);
+            float new_y = center_pos.y + radius * std::sin(current_angle);
+
+            setPosition(sf::Vector2f(new_x, new_y));
+            break;
         }
     }
 }
 
 sf::FloatRect Enemy::get_hitbox() const {
     sf::FloatRect bounds = enemy_sprite.getLocalBounds();
+
+    float HITBOX_WIDTH_PCT = 0.5f;
+    float HITBOX_HEIGHT_PCT = 0.5f;
+
     float hitbox_w = bounds.width * HITBOX_WIDTH_PCT;
     float hitbox_h = bounds.height * HITBOX_HEIGHT_PCT;
 
