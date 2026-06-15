@@ -28,6 +28,7 @@ public:
     Player& get_player() { return *player; }
     SoundManager& get_sound_manager() { return *sound_manager; }
     void advance_level();
+    bool can_advance_level() const { return collected_count >= total_collectibles; }
 
 private:
     void handle_events();
@@ -35,6 +36,8 @@ private:
     void render();
     void init_level(const int& level_num);
     void render_pause_screen();
+
+
 
     sf::Clock game_clock;
     ResourceManager resources;
@@ -57,6 +60,9 @@ private:
     int death_counter = 0;
     float level_time = 0.0f;
     float total_game_time = 0.0f;
+    int total_collectibles = 0;
+    int collected_count = 0;
+    bool is_settings_open = false;
 
     TileMap level_map;
     Game_state game_state = Game_state::MAIN_MENU;

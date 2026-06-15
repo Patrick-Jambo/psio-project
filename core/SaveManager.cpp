@@ -62,6 +62,10 @@ void SaveManager::load_settings() {
         if (s.contains("music_enabled")) Settings::music_enabled = s["music_enabled"];
         if (s.contains("god_mode_enabled")) Settings::god_mode_enabled = s["god_mode_enabled"];
         if (s.contains("hitboxes_enabled")) Settings::hitboxes_enabled = s["hitboxes_enabled"];
+
+        if (s.contains("sounds_enabled")) Settings::sounds_enabled = s["sounds_enabled"];
+        if (s.contains("volume")) Settings::volume = s["volume"].get<float>();
+
         std::cout << "SETTINGS LOADED INTO THE GAME." << std::endl;
     }
 }
@@ -70,6 +74,9 @@ void SaveManager::save_settings() {
     save_data["settings"]["music_enabled"] = Settings::music_enabled;
     save_data["settings"]["god_mode_enabled"] = Settings::god_mode_enabled;
     save_data["settings"]["hitboxes_enabled"] = Settings::hitboxes_enabled;
+
+    save_data["settings"]["sounds_enabled"] = Settings::sounds_enabled;
+    save_data["settings"]["volume"] = Settings::volume;
 }
 
 void SaveManager::update_global_records(int final_deaths, float final_time, bool& new_death_rec, bool& new_time_rec) {

@@ -3,9 +3,6 @@
 #include "../areas/CheckpointArea.hpp"
 #include "../areas/GoalArea.hpp"
 
-
-
-
 std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
     switch (level_num) {
         case 1: return create_level_1();
@@ -30,6 +27,7 @@ sf::Vector2f LevelManager::get_player_start_pos(const int& level_num) {
             player_start_pos.x = 64 * 2;
             player_start_pos.y = 64 * 6;
             break;
+
         case 3:
             player_start_pos.x = 64 * 2;
             player_start_pos.y = 64 * 2;
@@ -177,6 +175,14 @@ std::vector<std::unique_ptr<Collectible>> LevelManager::get_level_collectibles(c
 }
 
 std::vector<std::vector<int>> LevelManager::create_level_1() {
+    // --- ŚCIĄGAWKA DLA PROJEKTANTA ---
+    // 3   - Grass (Trawa / Ściana)
+    // 10  - Dirt środek | 20  - Dirt Dark środek | 30  - Area środek
+    // 11x - Dirt krawędź| 21x - Dark krawędź     | 31x - Area krawędź
+    // 12x - Dirt rog     | 22x - Dark róg         | 32x - Area róg
+    // 13x - Dirt tunel   | 23x - Dark tunel       | 33x - Area tunel
+    // Końcówki 'x' (rotacja): 0 = góra/TL, 1 = prawo/TR, 2 = dół/BR, 3 = lewo/BL
+
     std::vector<std::vector<int>> level_1 = {
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
@@ -211,6 +217,7 @@ std::vector<std::vector<int>> LevelManager::create_level_2() {
     };
     return level_2;
 }
+
 std::vector<std::vector<int> > LevelManager::create_level_3() {
     std::vector<std::vector<int>> level_3 = {
         {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},

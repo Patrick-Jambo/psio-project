@@ -1,4 +1,5 @@
 #include "SoundManager.hpp"
+#include "../ui/Settings.hpp"
 #include <cstdlib> // rand()
 
 SoundManager::SoundManager(ResourceManager& res) : resources(res) {
@@ -11,11 +12,14 @@ std::string SoundManager::get_random_sound(const std::string &sound_prefix, cons
 }
 
 void SoundManager::play_sound(const std::string& file_path) {
+    if (!Settings::sounds_enabled) return;
+
     const sf::SoundBuffer& buffer = resources.get_sound_buffer(file_path);
     active_sounds.emplace_back();
     sf::Sound& sound = active_sounds.back();
     sound.setBuffer(buffer);
-    sound.setVolume(70.0f);
+
+    sound.setVolume(Settings::volume);
     sound.play();
 }
 

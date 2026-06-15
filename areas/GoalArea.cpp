@@ -7,7 +7,9 @@ GoalArea::GoalArea(const sf::FloatRect &bounds) : Area(bounds)
 }
 
 void GoalArea::on_enter(Game& game) {
-    game.advance_level();
+    if (game.can_advance_level()) {
+        game.advance_level();
+    }
 }
 
 void GoalArea::debug_hitbox() {

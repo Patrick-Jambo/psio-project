@@ -20,7 +20,5 @@ public:
 private:
     ResourceManager& resources;
     std::vector<sf::Sound> active_sounds;
-
-    // Uniwersalna metoda pomocnicza do odpalenia konkretnego pliku
     void play_sound(const std::string& file_path);
 };

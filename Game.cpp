@@ -15,7 +15,7 @@ Game::Game() : level_map(resources) {
         sf::Style::Titlebar | sf::Style::Close
     );
 
-    SaveManager::load("assets/data/levels_data.json");
+    SaveManager::load("assets/data/game_data.json");
 
     game_window.setFramerateLimit(Config::GAME_FRAME_RATE);
 
@@ -64,17 +64,28 @@ void Game::handle_events() {
             game_window.close();
         }
 
-        if (game_settings) {
-            game_settings->handle_event(mouse_pos, event);
+        if (game_state == Game_state::MAIN_MENU && is_settings_open) {
+            bool close_settings = false;
+            game_settings->handle_event(mouse_pos, event, close_settings);
+            if (close_settings) {
+                is_settings_open = false;
+                SaveManager::save_settings();
+                SaveManager::save();
+            }
+            continue;
         }
 
         switch (game_state) {
             case Game_state::MAIN_MENU: {
                 bool start_game = false;
-                main_menu->handle_event(mouse_pos, event, start_game);
+                bool open_settings = false;
+
+                main_menu->handle_event(mouse_pos, event, start_game, open_settings);
 
                 if (start_game) {
                     game_state = Game_state::RULES;
+                } else if (open_settings) {
+                    is_settings_open = true;
                 }
                 break;
             }
@@ -82,24 +93,15 @@ void Game::handle_events() {
             case Game_state::RULES: {
                 bool return_to_main_menu = false;
                 bool start_playing = false;
-
-                if (game_rules) {
-                    game_rules->handle_event(event, start_playing, return_to_main_menu);
-                }
-
+                if (game_rules) game_rules->handle_event(event, start_playing, return_to_main_menu);
                 if (start_playing) {
                     game_window.setMouseCursor(default_cursor);
-
                     std::string text_from_json = SaveManager::get_intertitle(current_level);
                     if (sound_manager) sound_manager->play_level_clear_sound();
                     level_transition->start(text_from_json);
-
                     game_state = Game_state::TRANSITION;
                 }
-
-                else if (return_to_main_menu) {
-                    game_state = Game_state::MAIN_MENU;
-                }
+                else if (return_to_main_menu) game_state = Game_state::MAIN_MENU;
                 break;
             }
 
@@ -107,24 +109,8 @@ void Game::handle_events() {
                 if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
                     game_state = Game_state::PAUSED;
                 }
-                break;
-            }
 
-            case Game_state::PAUSED: {
-                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
-                    game_state = Game_state::PLAYING;
-                }
-                break;
-            }
-
-            case Game_state::END_MENU: {
-                bool return_to_menu = false;
-                if (end_game_screen) {
-                    end_game_screen->handle_event(event, return_to_menu);
-                }
-
-                if (return_to_menu) {
-                    // full game reset
+                if (level_stats_display && level_stats_display->handle_menu_click(mouse_pos, event)) {
                     current_level = 1;
                     death_counter = 0;
                     total_game_time = 0.0f;
@@ -133,8 +119,20 @@ void Game::handle_events() {
                 break;
             }
 
-            default:
+            case Game_state::PAUSED: {
+                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) game_state = Game_state::PLAYING;
                 break;
+            }
+            case Game_state::END_MENU: {
+                bool return_to_menu = false;
+                if (end_game_screen) end_game_screen->handle_event(event, return_to_menu);
+                if (return_to_menu) {
+                    current_level = 1; death_counter = 0; total_game_time = 0.0f;
+                    game_state = Game_state::MAIN_MENU;
+                }
+                break;
+            }
+            default: break;
         }
     }
 }
@@ -142,40 +140,33 @@ void Game::handle_events() {
 void Game::update(float dt) {
     sf::Vector2i mouse_pos = sf::Mouse::getPosition(game_window);
 
-    if (game_settings) {
-        game_settings->update(mouse_pos);
-    }
-
     if (game_state == Game_state::MAIN_MENU) {
-        main_menu->update(mouse_pos);
+        if (is_settings_open) {
+            game_settings->update(mouse_pos);
+        } else {
+            main_menu->update(mouse_pos);
+        }
     }
 
     if (game_state == Game_state::PLAYING) {
-        level_time+=dt;
-        total_game_time+=dt;
+        level_time += dt;
+        total_game_time += dt;
         player->update(dt, level_map);
 
         for (auto& enemy : enemies) enemy->update(dt, level_map);
-
         for (auto& collectible : collectibles) collectible->update(dt, level_map);
-
         for (auto& area : areas) {
-            // check if it's checkpoint area
             auto* checkpoint = dynamic_cast<CheckpointArea*>(area.get());
-            if (checkpoint) {
-                checkpoint->update(dt);
-            }
+            if (checkpoint) checkpoint->update(dt);
         }
 
         check_game_collisions();
 
         if (level_stats_display) {
-            level_stats_display->update(level_time, death_counter);
+            level_stats_display->update(level_time, death_counter, collected_count, total_collectibles, current_level, mouse_pos);
         }
 
-        if (sound_manager) {
-            sound_manager->update();
-        }
+        if (sound_manager) sound_manager->update();
     }
 
     if (game_state == Game_state::TRANSITION) {
@@ -187,19 +178,18 @@ void Game::update(float dt) {
 
     bool need_hand_cursor = false;
 
-    if (game_settings && game_settings->any_button_hovered()) {
+    if (game_state == Game_state::MAIN_MENU) {
+        if (is_settings_open && game_settings->any_button_hovered()) {
+            need_hand_cursor = true;
+        } else if (!is_settings_open && (main_menu->get_play_button().is_mouse_over() || main_menu->get_settings_button().is_mouse_over())) {
+            need_hand_cursor = true;
+        }
+    }
+    else if (game_state == Game_state::PLAYING && level_stats_display && level_stats_display->get_menu_button().is_mouse_over()) {
         need_hand_cursor = true;
     }
 
-    else if (game_state == Game_state::MAIN_MENU && main_menu->get_play_button().is_mouse_over()) {
-        need_hand_cursor = true;
-    }
-
-    if (need_hand_cursor) {
-        game_window.setMouseCursor(hand_cursor);
-    } else {
-        game_window.setMouseCursor(default_cursor);
-    }
+    game_window.setMouseCursor(need_hand_cursor ? hand_cursor : default_cursor);
 }
 
 void Game::render_pause_screen() {
@@ -226,7 +216,14 @@ void Game::render_pause_screen() {
 void Game::render() {
     game_window.clear(sf::Color(177, 179, 249));
 
-    if (game_state == Game_state::MAIN_MENU)  main_menu->draw(game_window);
+    if (game_state == Game_state::MAIN_MENU) {
+        main_menu->draw(game_window);
+
+        if (is_settings_open && game_settings) {
+            game_settings->draw(game_window);
+        }
+    }
+
     if (game_state == Game_state::RULES)      game_rules->draw(game_window);
     if (game_state == Game_state::TRANSITION) level_transition->draw(game_window);
 
@@ -238,7 +235,6 @@ void Game::render() {
         for (auto& enemy : enemies) game_window.draw(*enemy);
         game_window.draw(*player);
 
-        if (game_settings) game_settings->draw(game_window);
         if (level_stats_display) level_stats_display->draw(game_window);
 
         if (game_state == Game_state::PAUSED) {
@@ -270,6 +266,10 @@ void Game::init_level(const int& level_num) {
     enemies = LevelManager::get_level_enemies(level_num, resources);
     collectibles = LevelManager::get_level_collectibles(level_num, resources);
 
+    collected_count = 0;
+    total_collectibles = static_cast<int>(collectibles.size());
+
+
     areas = LevelManager::get_level_areas(level_num,resources);
 }
 
@@ -292,6 +292,7 @@ void Game::check_game_collisions() {
         if (player_hitbox.intersects(collectible->get_hitbox()) && !collectible->is_collected()) {
             if (sound_manager) sound_manager->play_collect_sound();
             collectible->collect();
+            collected_count++;
         }
     }
 

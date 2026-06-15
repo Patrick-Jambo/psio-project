@@ -8,15 +8,15 @@
         "intertitle_text": "SLOW AND STEADY WINS THE...\n          OH WAIT, YOU DIED."
     },
     "3": {
-        "best_time": 2.86,
+        "best_time": 2.95,
         "intertitle_text": "GET READY FOR THE DOUBLE TROUBLE."
     },
     "4": {
-        "best_time": 5.08,
+        "best_time": 5.07,
         "intertitle_text": "THIS IS WHERE IT ACTUALLY GETS HARD."
     },
     "5": {
-        "best_time": 3.83,
+        "best_time": 4.25,
         "intertitle_text": "THE FINAL STRETCH!"
     },
     "global_stats": {
@@ -25,7 +25,9 @@
     },
     "settings": {
         "god_mode_enabled": true,
-        "hitboxes_enabled": true,
-        "music_enabled": false
+        "hitboxes_enabled": false,
+        "music_enabled": true,
+        "sounds_enabled": true,
+        "volume": 100.0
     }
 }
