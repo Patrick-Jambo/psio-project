@@ -20,6 +20,8 @@ void CheckpointArea::on_enter(Game& game) {
     if (campfire_state == CampfireState::UNLIT) {
         game.get_player().set_respawn_position(respawn_position);
 
+        game.get_sound_manager().play_checkpoint_sound();
+
         campfire_state = CampfireState::IGNITING;
         animator->reset();
         animator = std::make_unique<Animation>(campfire_sprite, 0.15f, false);

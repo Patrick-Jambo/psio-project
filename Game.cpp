@@ -40,6 +40,7 @@ Game::Game() : level_map(resources) {
     game_rules = std::make_unique<GameRules>(resources);
     level_transition = std::make_unique<LevelTransition>(resources);
     end_game_screen = std::make_unique<EndGameScreen>(resources);
+    sound_manager = std::make_unique<SoundManager>(resources);
 
 }
 
@@ -90,6 +91,7 @@ void Game::handle_events() {
                     game_window.setMouseCursor(default_cursor);
 
                     std::string text_from_json = SaveManager::get_intertitle(current_level);
+                    if (sound_manager) sound_manager->play_level_clear_sound();
                     level_transition->start(text_from_json);
 
                     game_state = Game_state::TRANSITION;
@@ -158,7 +160,7 @@ void Game::update(float dt) {
         for (auto& collectible : collectibles) collectible->update(dt, level_map);
 
         for (auto& area : areas) {
-            // Próbujemy rzutować Area na CheckpointArea
+            // check if it's checkpoint area
             auto* checkpoint = dynamic_cast<CheckpointArea*>(area.get());
             if (checkpoint) {
                 checkpoint->update(dt);
@@ -169,6 +171,10 @@ void Game::update(float dt) {
 
         if (level_stats_display) {
             level_stats_display->update(level_time, death_counter);
+        }
+
+        if (sound_manager) {
+            sound_manager->update();
         }
     }
 
@@ -274,6 +280,7 @@ void Game::check_game_collisions() {
         for (auto& enemy : enemies) {
             if (player_hitbox.intersects(enemy->get_hitbox())) {
                 death_counter++;
+                if (sound_manager) sound_manager->play_death_sound();
                 //TODO: ADD DEATH ANIMATION
                 player->respawn();
                 return;
@@ -283,6 +290,7 @@ void Game::check_game_collisions() {
 
     for (auto& collectible : collectibles) {
         if (player_hitbox.intersects(collectible->get_hitbox()) && !collectible->is_collected()) {
+            if (sound_manager) sound_manager->play_collect_sound();
             collectible->collect();
         }
     }
@@ -296,6 +304,7 @@ void Game::check_game_collisions() {
 
 void Game::advance_level() {
     SaveManager::update_best_time(current_level,level_time);
+    if (sound_manager) sound_manager->play_level_clear_sound();
     current_level++;
 
     std::vector<std::vector<int>> next_level_tiles = LevelManager::get_level(current_level);
