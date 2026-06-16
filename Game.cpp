@@ -41,7 +41,7 @@ Game::Game() : level_map(resources) {
     level_transition = std::make_unique<LevelTransition>(resources);
     end_game_screen = std::make_unique<EndGameScreen>(resources);
     sound_manager = std::make_unique<SoundManager>(resources);
-
+    level_selector = std::make_unique<LevelSelector>(resources);
 }
 
 void Game::run() {
@@ -75,17 +75,48 @@ void Game::handle_events() {
             continue;
         }
 
+        if (game_state == Game_state::MAIN_MENU && is_selector_open) {
+            bool close_selector = false;
+            int selected_level = -1;
+
+            level_selector->handle_event(mouse_pos, event, close_selector, selected_level);
+
+            if (close_selector) {
+                is_selector_open = false;
+            }
+            else if (selected_level != -1) {
+                is_selector_open = false;
+                is_selector_run = true;
+
+                current_level = selected_level;
+                death_counter = 0;
+                total_game_time = 0.0f;
+
+                game_window.setMouseCursor(default_cursor);
+                std::string text_from_json = SaveManager::get_intertitle(current_level);
+                if (sound_manager) sound_manager->play_level_clear_sound();
+                level_transition->start(text_from_json);
+                game_state = Game_state::TRANSITION;
+            }
+            continue;
+        }
+
+
         switch (game_state) {
             case Game_state::MAIN_MENU: {
                 bool start_game = false;
                 bool open_settings = false;
+                bool open_selector = false;
 
-                main_menu->handle_event(mouse_pos, event, start_game, open_settings);
+                main_menu->handle_event(mouse_pos, event, start_game, open_settings, open_selector);
 
                 if (start_game) {
+                    is_selector_run = false;
                     game_state = Game_state::RULES;
                 } else if (open_settings) {
                     is_settings_open = true;
+                } else if (open_selector) {
+                    is_selector_open = true;
                 }
                 break;
             }
@@ -114,6 +145,7 @@ void Game::handle_events() {
                     current_level = 1;
                     death_counter = 0;
                     total_game_time = 0.0f;
+                    is_selector_run = false;
                     game_state = Game_state::MAIN_MENU;
                 }
                 break;
@@ -143,6 +175,8 @@ void Game::update(float dt) {
     if (game_state == Game_state::MAIN_MENU) {
         if (is_settings_open) {
             game_settings->update(mouse_pos);
+        } else if (is_selector_open) {
+            level_selector->update(mouse_pos);
         } else {
             main_menu->update(mouse_pos);
         }
@@ -181,9 +215,14 @@ void Game::update(float dt) {
     if (game_state == Game_state::MAIN_MENU) {
         if (is_settings_open && game_settings->any_button_hovered()) {
             need_hand_cursor = true;
-        } else if (!is_settings_open && (main_menu->get_play_button().is_mouse_over() || main_menu->get_settings_button().is_mouse_over())) {
+        } else if (is_selector_open && level_selector->any_button_hovered()) {
             need_hand_cursor = true;
-        }
+        } else if (!is_settings_open && !is_selector_open &&
+                  (main_menu->get_play_button().is_mouse_over() ||
+                   main_menu->get_settings_button().is_mouse_over() ||
+                   main_menu->get_selector_button().is_mouse_over())) {
+            need_hand_cursor = true;
+                   }
     }
     else if (game_state == Game_state::PLAYING && level_stats_display && level_stats_display->get_menu_button().is_mouse_over()) {
         need_hand_cursor = true;
@@ -221,6 +260,10 @@ void Game::render() {
 
         if (is_settings_open && game_settings) {
             game_settings->draw(game_window);
+        }
+
+        if (is_selector_open && level_selector) {
+            level_selector->draw(game_window);
         }
     }
 
@@ -304,7 +347,10 @@ void Game::check_game_collisions() {
 }
 
 void Game::advance_level() {
-    SaveManager::update_best_time(current_level,level_time);
+    if (!is_selector_run) {
+        SaveManager::update_best_time(current_level, level_time);
+    }
+
     if (sound_manager) sound_manager->play_level_clear_sound();
     current_level++;
 
@@ -316,7 +362,9 @@ void Game::advance_level() {
         bool is_new_death_record = false;
         bool is_new_time_record = false;
 
-        SaveManager::update_global_records(death_counter, total_game_time, is_new_death_record, is_new_time_record);
+        if (!is_selector_run) {
+            SaveManager::update_global_records(death_counter, total_game_time, is_new_death_record, is_new_time_record);
+        }
 
         int best_deaths = SaveManager::get_global_death_record();
         float best_time = SaveManager::get_global_time_record();
@@ -330,7 +378,8 @@ void Game::advance_level() {
                 is_new_death_record,
                 is_new_time_record,
                 best_deaths,
-                best_time
+                best_time,
+                is_selector_run
             );
         }
         game_state = Game_state::END_MENU;
@@ -338,7 +387,6 @@ void Game::advance_level() {
         std::cout << "PREPARING LEVEL: " << current_level << std::endl;
         std::string text_from_json = SaveManager::get_intertitle(current_level);
         level_transition->start(text_from_json);
-
         game_state = Game_state::TRANSITION;
     }
 }

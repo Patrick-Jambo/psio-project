@@ -17,7 +17,7 @@ public:
     void respawn() { setPosition(respawn_position); }
 
 private:
-    const float SPEED = 400;
+    const float SPEED = 255.0f;
 
     sf::Sprite player_sprite;
     sf::Vector2f velocity;

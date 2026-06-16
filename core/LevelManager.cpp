@@ -189,8 +189,8 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
 
             float radiusA = 52 * 2;
             float radiusB = 52;
-            float angular_speed = 2.f;
-            std::vector<float> angles = {0.0f, 1.5707963f, 3.1415927f, 4.7123890f};
+            float angular_speed = 2.4f;
+            std::vector angles = {0.0f, 1.5707963f, 3.1415927f, 4.7123890f};
 
             for (const auto& center : centers) {
                 // Środek wiatraka (generowany tylko raz)
@@ -338,12 +338,13 @@ std::vector<std::unique_ptr<Collectible>> LevelManager::get_level_collectibles(c
     std::vector<std::unique_ptr<Collectible>> level_collectibles;
 
     switch (level_num) {
-        case 1:
-            return {};
         case 2:
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 10, 64 * 6),resources));
+        case 4:
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 15 + 32, 64 * 7 + 32),resources));
         default:
             break;
+
     }
 
     return level_collectibles;

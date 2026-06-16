@@ -55,8 +55,9 @@ void LevelStatsDisplay::update(float total_seconds, int deaths, int collected, i
 
     level_text.setPosition(left_margin, pos_y);
 
-    float menu_btn_y = Config::WINDOW_HEIGHT - 65.0f;
-    menu_button->set_position(sf::Vector2f(left_margin, menu_btn_y));
+    float menu_btn_x = level_text.getPosition().x + level_text.getGlobalBounds().width + 40.0f;
+
+    menu_button->set_position(sf::Vector2f(menu_btn_x, pos_y));
     menu_button->update(mouse_pos);
 
     float time_x = Config::WINDOW_WIDTH - right_margin - time_text.getGlobalBounds().width;

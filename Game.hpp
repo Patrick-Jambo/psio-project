@@ -13,6 +13,7 @@
 #include "ui/GameRules.hpp"
 #include "ui/LevelTransition.hpp"
 #include "ui/EndGameScreen.hpp"
+#include "ui/LevelSelector.hpp"
 
 #include "objects/Player.hpp"
 #include "objects/Enemy.hpp"
@@ -62,7 +63,11 @@ private:
     float total_game_time = 0.0f;
     int total_collectibles = 0;
     int collected_count = 0;
+
     bool is_settings_open = false;
+    bool is_selector_open = false;
+    bool is_selector_run = false;
+
 
     TileMap level_map;
     Game_state game_state = Game_state::MAIN_MENU;
@@ -75,6 +80,7 @@ private:
     std::unique_ptr<LevelTransition> level_transition;
     std::unique_ptr<EndGameScreen> end_game_screen;
     std::unique_ptr<SoundManager> sound_manager;
+    std::unique_ptr<LevelSelector> level_selector;
 
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<std::unique_ptr<Collectible>> collectibles;

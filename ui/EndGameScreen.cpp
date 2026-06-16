@@ -27,7 +27,7 @@ EndGameScreen::EndGameScreen(ResourceManager& resources) {
     return_prompt.setPosition(Utils::get_centered_x(return_prompt.getGlobalBounds().width), 580.0f);
 }
 
-void EndGameScreen::setup_final_scores(const sf::Font& font, int total_deaths, float total_time, bool is_death_rec, bool is_time_rec, int current_record_deaths, float current_record_time) {
+void EndGameScreen::setup_final_scores(const sf::Font& font, int total_deaths, float total_time, bool is_death_rec, bool is_time_rec, int current_record_deaths, float current_record_time, bool is_selector_run) {
     sf::Color outline_color = sf::Color::Black;
 
     final_deaths_text.setFont(font);
@@ -35,33 +35,49 @@ void EndGameScreen::setup_final_scores(const sf::Font& font, int total_deaths, f
     final_deaths_text.setOutlineColor(outline_color);
     final_deaths_text.setOutlineThickness(3.0f);
 
-    if (is_death_rec) {
-        final_deaths_text.setString("DEATHS: " + std::to_string(total_deaths) + " (NEW RECORD!)");
-        final_deaths_text.setFillColor(sf::Color::Yellow);
-    } else {
-        // Zamiana -1 na kreskę
-        std::string death_rec_str = (current_record_deaths == -1) ? "-" : std::to_string(current_record_deaths);
-
-        final_deaths_text.setString("DEATHS: " + std::to_string(total_deaths) + "  (BEST: " + death_rec_str + ")");
-        final_deaths_text.setFillColor(sf::Color::White);
-    }
-    final_deaths_text.setPosition(Utils::get_centered_x(final_deaths_text.getGlobalBounds().width), 260.0f);
-
     final_time_text.setFont(font);
     final_time_text.setCharacterSize(30);
     final_time_text.setOutlineColor(outline_color);
     final_time_text.setOutlineThickness(3.0f);
 
-    if (is_time_rec) {
-        final_time_text.setString("TIME: " + format_time(total_time) + " (NEW RECORD!)");
-        final_time_text.setFillColor(sf::Color::Yellow);
-    } else {
-        // Zamiana -1 na kreskę
-        std::string time_rec_str = (current_record_time == -1.0f) ? "-" : format_time(current_record_time);
+    selector_warning_text.setString("");
 
-        final_time_text.setString("TIME: " + format_time(total_time) + "  (BEST: " + time_rec_str + ")");
+    if (is_selector_run) {
+        final_deaths_text.setString("DEATHS: " + std::to_string(total_deaths));
+        final_deaths_text.setFillColor(sf::Color::White);
+
+        final_time_text.setString("TIME: " + format_time(total_time));
         final_time_text.setFillColor(sf::Color::White);
+
+        selector_warning_text.setFont(font);
+        selector_warning_text.setString("RECORDS ARE DISABLED IN LEVEL SELECTOR MODE!");
+        selector_warning_text.setCharacterSize(18);
+        selector_warning_text.setFillColor(sf::Color(255, 50, 50));
+        selector_warning_text.setOutlineColor(outline_color);
+        selector_warning_text.setOutlineThickness(2.0f);
+        selector_warning_text.setPosition(Utils::get_centered_x(selector_warning_text.getGlobalBounds().width), 460.0f);
+
+    } else {
+        if (is_death_rec) {
+            final_deaths_text.setString("DEATHS: " + std::to_string(total_deaths) + " (NEW RECORD!)");
+            final_deaths_text.setFillColor(sf::Color::Yellow);
+        } else {
+            std::string death_rec_str = (current_record_deaths == -1) ? "-" : std::to_string(current_record_deaths);
+            final_deaths_text.setString("DEATHS: " + std::to_string(total_deaths) + "  (BEST: " + death_rec_str + ")");
+            final_deaths_text.setFillColor(sf::Color::White);
+        }
+
+        if (is_time_rec) {
+            final_time_text.setString("TIME: " + format_time(total_time) + " (NEW RECORD!)");
+            final_time_text.setFillColor(sf::Color::Yellow);
+        } else {
+            std::string time_rec_str = (current_record_time == -1.0f) ? "-" : format_time(current_record_time);
+            final_time_text.setString("TIME: " + format_time(total_time) + "  (BEST: " + time_rec_str + ")");
+            final_time_text.setFillColor(sf::Color::White);
+        }
     }
+
+    final_deaths_text.setPosition(Utils::get_centered_x(final_deaths_text.getGlobalBounds().width), 260.0f);
     final_time_text.setPosition(Utils::get_centered_x(final_time_text.getGlobalBounds().width), 360.0f);
 }
 
@@ -78,6 +94,7 @@ void EndGameScreen::draw(sf::RenderWindow& game_window) {
     game_window.draw(congrats_title);
     game_window.draw(final_deaths_text);
     game_window.draw(final_time_text);
+    game_window.draw(selector_warning_text);
     game_window.draw(return_prompt);
 }
 
