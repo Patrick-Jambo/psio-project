@@ -326,6 +326,10 @@ void Game::check_game_collisions() {
                 if (sound_manager) sound_manager->play_death_sound();
                 //TODO: ADD DEATH ANIMATION
                 player->respawn();
+
+                collected_count = 0;
+                collectibles = LevelManager::get_level_collectibles(current_level,resources);
+
                 return;
             }
         }
