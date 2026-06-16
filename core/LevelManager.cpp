@@ -13,6 +13,7 @@ std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
         case 5: return create_level_5();
         case 6: return create_level_6();
         case 7: return create_level_7();
+        case 8: return create_level_8();
         case 10: return create_level_10();
         default: return {};
     }
@@ -49,6 +50,10 @@ sf::Vector2f LevelManager::get_player_start_pos(const int& level_num) {
         case 7:
             player_start_pos.x = 64 * 10;
             player_start_pos.y = 64 * 6;
+            break;
+        case 8:
+            player_start_pos.x = 64 * 8+32;
+            player_start_pos.y = 64 * 2;
             break;
         case 10:
             player_start_pos.x = 64 * 2;
@@ -216,7 +221,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             float radiusB = 56;
             float radiusC = 56 * 3;
             float radiusD = 56 * 4;
-            float angular_speed = 2.3f;
+            float angular_speed = 1.65f;
             float angle0 = 0.0f; // 0 stopni
             float angle90 = 1.5707963f; // 90 stopni
             float angle180 = 3.1415927f; // 180 stopni
@@ -298,7 +303,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 7: {
-            float path_speed = 190.0f;
+            float path_speed = 175.0f;
 
             std::vector<sf::Vector2f> base_path = {
                 sf::Vector2f(64 * 8 + 32,  64 * 4 + 32),
@@ -329,6 +334,28 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
                     EnemyMoveMode::Path
                 ));
             }
+
+            break;
+        }
+        case 8: {
+            float e1_speed = 400.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{sf::Vector2f(64*8 +32, 64*4 +32), sf::Vector2f(64*9 +32, 64*4 +32)},
+                e1_speed, resources, EnemyMoveMode::PingPong
+            ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{sf::Vector2f(64*9 +32, 64*5 +32), sf::Vector2f(64*8 +32, 64*5 +32)},
+                e1_speed, resources, EnemyMoveMode::PingPong
+            ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{sf::Vector2f(64*8 +32, 64*6 +32), sf::Vector2f(64*9 +32, 64*6 +32)},
+                e1_speed, resources, EnemyMoveMode::PingPong
+            ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{sf::Vector2f(64*9 +32, 64*7 +32), sf::Vector2f(64*8 +32, 64*7 +32)},
+                e1_speed, resources, EnemyMoveMode::PingPong
+            ));
+
 
             break;
         }
@@ -488,6 +515,23 @@ std::vector<std::vector<int> > LevelManager::create_level_7() {
     };
     return level_7;
 }
+std::vector<std::vector<int> > LevelManager::create_level_8() {
+    std::vector<std::vector<int>> level_8 = {
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,320,310,321,3,320,310,321,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,313,312,322,3,313,312,322,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,130,3,3,3,130,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,213,121,3,120,211,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,113,211,3,213,111,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,213,111,3,113,211,3,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,120,210,112,222,3,223,112,210,121,3,3,3,3,3},
+        {3,3,3,3,3,3,213,111,3,3,3,3,3,113,211,3,3,3,3,3},
+        {3,3,3,3,3,3,123,212,110,210,110,210,110,212,122,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,223,112,212,112,222,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
+    };
+    return level_8;
+}
 std::vector<std::vector<int> > LevelManager::create_level_10() {
     std::vector<std::vector<int>> level_10 = {
         {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -539,6 +583,10 @@ std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& leve
         }
         case 7: {
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*8,64*3,64*1,64*1)));
+            break;
+        }
+        case 8: {
+            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*12,64*1,64*3,64*2)));
             break;
         }
         case 10: {

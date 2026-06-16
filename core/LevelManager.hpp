@@ -22,5 +22,6 @@ private:
     static std::vector<std::vector<int>> create_level_5();
     static std::vector<std::vector<int>> create_level_6();
     static std::vector<std::vector<int>> create_level_7();
+    static std::vector<std::vector<int>> create_level_8();
     static std::vector<std::vector<int>> create_level_10();
 };
