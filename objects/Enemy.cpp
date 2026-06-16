@@ -11,12 +11,12 @@ Enemy::Enemy(std::vector<sf::Vector2f> pts, float speed, ResourceManager &resour
     if (!waypoints.empty()) setPosition(waypoints[0]);
     if (waypoints.size() > 1) current_target_idx = 1;
 
-    const sf::Texture& texture = resources.get_texture("assets/img/enemy.png");
+    const sf::Texture& texture = resources.get_texture("assets/img/enemy_2.png");
     enemy_sprite.setTexture(texture);
     animator = std::make_unique<Animation>(enemy_sprite);
-    animator->add_frame_line(0,0,200,200,9,5);
-    enemy_sprite.setOrigin(200 / 2.0f, 200 / 2.0f);
-    setScale(0.16f, 0.16f);
+    animator->add_frame_line(0,0,250,250,6,5);
+    enemy_sprite.setOrigin(250 / 2.0f, 250 / 2.0f);
+    setScale(0.128f, 0.128f);
 }
 
 
@@ -32,12 +32,12 @@ Enemy::Enemy(sf::Vector2f center, float radius, float angular_speed, ResourceMan
     float start_y = center_pos.y + radius * std::sin(current_angle);
     setPosition(sf::Vector2f(start_x, start_y));
 
-    const sf::Texture& texture = resources.get_texture("assets/img/enemy.png");
+    const sf::Texture& texture = resources.get_texture("assets/img/enemy_2.png");
     enemy_sprite.setTexture(texture);
     animator = std::make_unique<Animation>(enemy_sprite);
-    animator->add_frame_line(0,0,200,200,9,5);
-    enemy_sprite.setOrigin(200 / 2.0f, 200 / 2.0f);
-    setScale(0.16f, 0.16f);
+    animator->add_frame_line(0,0,250,250,6,5);
+    enemy_sprite.setOrigin(250 / 2.0f, 250 / 2.0f);
+    setScale(0.128f, 0.128f);
 }
 
 void Enemy::update(float dt, const TileMap &level_map) {

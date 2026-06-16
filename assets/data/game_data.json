@@ -26,8 +26,8 @@
     "settings": {
         "god_mode_enabled": true,
         "hitboxes_enabled": false,
-        "music_enabled": false,
-        "sounds_enabled": false,
-        "volume": 100.0
+        "music_enabled": true,
+        "sounds_enabled": true,
+        "volume": 50.0
     }
 }
