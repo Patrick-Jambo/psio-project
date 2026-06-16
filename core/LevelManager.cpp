@@ -699,8 +699,8 @@ std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& leve
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*9,64*5,64*2,64*2)));
             break;
         }
-        case 10: {
-            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*12,64*1,64*3,64*2)));
+        case 9: {
+            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*15,64*5,64*2,64*2)));
             break;
         }
         case 8: {
@@ -710,7 +710,10 @@ std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& leve
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*15,64*2,64*2,64*2)));
             break;
         }
-
+        case 10: {
+                    level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*12,64*1,64*3,64*2)));
+                    break;
+                }
 
         default:
             break;
