@@ -6,17 +6,15 @@
 Player::Player(sf::Vector2f start_pos, ResourceManager& resources) {
     set_respawn_position(start_pos);
 
-    const sf::Texture& player_texture = resources.get_texture("assets/img/player.png");
+    const sf::Texture& player_texture = resources.get_texture("assets/img/player_2.png");
     player_sprite.setTexture(player_texture);
 
     animator = std::make_unique<Animation>(player_sprite);
-    animator->add_frame_line(0,0,319,434,6,5);
+    animator->add_frame_line(0,0,300,300,6,5);
 
-    player_sprite.setOrigin(319 / 2.0f, 434 / 2.0f);
-    setScale(0.2f, 0.2f);
+    player_sprite.setOrigin(300 / 2.0f, 300 / 2.0f);
+    setScale(0.149f, 0.149f);
     setPosition(start_pos);
-    HITBOX_WIDTH_PCT = 0.93f;
-    HITBOX_HEIGHT_PCT = 0.68f;
 }
 
 void Player::handle_input() {

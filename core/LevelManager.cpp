@@ -216,7 +216,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             float radiusB = 56;
             float radiusC = 56 * 3;
             float radiusD = 56 * 4;
-            float angular_speed = 2.3f;
+            float angular_speed = 1.7f;
             float angle0 = 0.0f; // 0 stopni
             float angle90 = 1.5707963f; // 90 stopni
             float angle180 = 3.1415927f; // 180 stopni
@@ -298,7 +298,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 7: {
-            float path_speed = 190.0f;
+            float path_speed = 175.0f;
 
             std::vector<sf::Vector2f> base_path = {
                 sf::Vector2f(64 * 8 + 32,  64 * 4 + 32),
@@ -351,6 +351,13 @@ std::vector<std::unique_ptr<Collectible>> LevelManager::get_level_collectibles(c
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 11 + 32, 64 * 7 + 32),resources));
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 7 + 32, 64 * 7 + 32),resources));
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 3 + 32, 64 * 7 + 32),resources));
+            break;
+        case 5:
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 13 + 32, 64 * 9 + 32),resources));
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 6 + 32, 64 * 2 + 32),resources));
+            break;
+        case 7:
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 8 + 32, 64 * 3 + 32),resources));
         default:
             break;
 
@@ -538,7 +545,7 @@ std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& leve
             break;
         }
         case 7: {
-            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*8,64*3,64*1,64*1)));
+            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*9,64*5,64*2,64*2)));
             break;
         }
         case 10: {
