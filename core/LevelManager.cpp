@@ -13,6 +13,7 @@ std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
         case 5: return create_level_5();
         case 6: return create_level_6();
         case 7: return create_level_7();
+        case 10: return create_level_10();
         default: return {};
     }
 }
@@ -48,6 +49,10 @@ sf::Vector2f LevelManager::get_player_start_pos(const int& level_num) {
         case 7:
             player_start_pos.x = 64 * 10;
             player_start_pos.y = 64 * 6;
+            break;
+        case 10:
+            player_start_pos.x = 64 * 2;
+            player_start_pos.y = 64 * 4;
             break;
         default:
             player_start_pos.x = 100.0f;
@@ -293,7 +298,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 7: {
-            float path_speed = 250.0f;
+            float path_speed = 190.0f;
 
             std::vector<sf::Vector2f> base_path = {
                 sf::Vector2f(64 * 8 + 32,  64 * 4 + 32),
@@ -471,7 +476,7 @@ std::vector<std::vector<int> > LevelManager::create_level_7() {
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,330,3,3,3,3,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,230,3,3,3,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,113,210,110,221,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,213,30,30,111,3,3,3,3,3,3,3,3},
         {3,3,3,3,3,3,3,3,113,30,30,211,3,3,3,3,3,3,3,3},
@@ -482,6 +487,23 @@ std::vector<std::vector<int> > LevelManager::create_level_7() {
         {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
     };
     return level_7;
+}
+std::vector<std::vector<int> > LevelManager::create_level_10() {
+    std::vector<std::vector<int>> level_10 = {
+        {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+    {3, 320, 310, 321,3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
+    {3, 313, 30, 30, 110, 210, 121, 3, 120, 221,3, 220, 121,3, 120, 310, 321, 3, 3, 3},
+    {3, 313, 30, 30, 20, 10, 211, 3, 213, 111, 3, 113, 211,3, 232, 312, 322, 3, 3, 3},
+    {3, 313, 30, 30, 10, 20, 111, 3, 113, 20, 331, 20, 111,3, 132, 3, 3, 3, 3, 3},
+    {3, 313, 30, 30, 212, 10, 211, 3, 213, 111, 3, 113, 211,3, 232,3, 3, 3,3, 3},
+    {3, 323, 312, 322,3, 213, 111, 3, 113, 211, 3, 213, 111,3, 132,3, 3, 3, 3, 3},
+    {3, 3, 3, 3, 3, 113, 211, 3, 213, 111, 3, 113, 211, 3, 232, 3, 3, 3, 3, 3},
+    {3, 3, 3, 3, 3, 213, 111, 3, 113, 211, 3, 213, 111, 3, 132, 3, 3, 3, 3, 3},
+    {3, 3, 3, 3, 3, 123, 212, 131, 212, 122,3, 123, 212, 131, 222, 3, 3, 3,3, 3},
+    {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,3, 3, 3, 3, 3},
+    {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+    };
+    return level_10;
 }
 
 std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& level_num, ResourceManager& resources) {
@@ -517,6 +539,13 @@ std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& leve
         }
         case 7: {
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*8,64*3,64*1,64*1)));
+            break;
+        }
+        case 10: {
+            sf::FloatRect c_point_pos = sf::FloatRect(64*10,64*4,64*1,64*1);
+            sf::Vector2f res_pos = sf::Vector2f(64*10+32, 64*4+32);
+            level_areas.emplace_back(std::make_unique<CheckpointArea>(c_point_pos,res_pos,resources));
+            level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*15,64*2,64*2,64*2)));
             break;
         }
 
