@@ -22,16 +22,16 @@ MainMenu::MainMenu(ResourceManager &resources) {
     play_button->set_position(sf::Vector2f(Utils::get_centered_x(play_button->get_width()), 310));
 
     //SETTINGS
-    settings_button = std::make_unique<Button>(sf::Vector2f(0, 420), 40, "SETTINGS", main_font);
+    settings_button = std::make_unique<Button>(sf::Vector2f(0, 420), 35, "SETTINGS", main_font);
     settings_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
     settings_button->set_text_outlines(sf::Color::Black, sf::Color::Black, 3);
     settings_button->set_position(sf::Vector2f(Utils::get_centered_x(settings_button->get_width()), 420));
 
     //LV SELECTOR
-    selector_button = std::make_unique<Button>(sf::Vector2f(0, 520), 40, "LV SELECTOR", main_font);
+    selector_button = std::make_unique<Button>(sf::Vector2f(0, 520), 35, "LEVEL SELECTOR", main_font);
     selector_button->set_text_colors(sf::Color::White, sf::Color(255,152,2));
     selector_button->set_text_outlines(sf::Color::Black, sf::Color::Black, 3);
-    selector_button->set_position(sf::Vector2f(Utils::get_centered_x(selector_button->get_width()), 520));
+    selector_button->set_position(sf::Vector2f(Utils::get_centered_x(selector_button->get_width()), 510));
 
     background_sprite.setTexture(resources.get_texture("assets/img/background.png"));
 }

@@ -46,7 +46,7 @@ void LevelStatsDisplay::update(float total_seconds, int deaths, int collected, i
     death_text.setString("DEATHS: " + std::to_string(deaths));
     time_text.setString("TIME: " + format_time(total_seconds));
     leaves_text.setString("LEAVES: " + std::to_string(collected) + " / " + std::to_string(total_col));
-    level_text.setString("LV: " + std::to_string(current_level) + " / 10");
+    level_text.setString("LEVEL: " + std::to_string(current_level) + " / 10");
 
     float left_margin = 20.0f;
     float right_margin = 20.0f;
