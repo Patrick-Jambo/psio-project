@@ -52,13 +52,14 @@ sf::Vector2f LevelManager::get_player_start_pos(const int& level_num) {
             player_start_pos.y = 64 * 6;
             break;
         case 8:
-            player_start_pos.x = 64 * 8+32;
-            player_start_pos.y = 64 * 2;
-            break;
-        case 10:
             player_start_pos.x = 64 * 2;
             player_start_pos.y = 64 * 4;
             break;
+        case 10:
+            player_start_pos.x = 64 * 8+32;
+            player_start_pos.y = 64 * 2;
+            break;
+
         default:
             player_start_pos.x = 100.0f;
             player_start_pos.y = 100.0f;
@@ -337,25 +338,29 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
 
             break;
         }
-        case 8: {
-            float e1_speed = 170.0f;
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-                std::vector<sf::Vector2f>{sf::Vector2f(64*8 +32, 64*4 +32), sf::Vector2f(64*9 +32, 64*4 +32)},
-                e1_speed, resources, EnemyMoveMode::PingPong
-            ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-                std::vector<sf::Vector2f>{sf::Vector2f(64*9 +32, 64*5 +32), sf::Vector2f(64*8 +32, 64*5 +32)},
-                e1_speed, resources, EnemyMoveMode::PingPong
-            ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-                std::vector<sf::Vector2f>{sf::Vector2f(64*8 +32, 64*6 +32), sf::Vector2f(64*9 +32, 64*6 +32)},
-                e1_speed, resources, EnemyMoveMode::PingPong
-            ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-                std::vector<sf::Vector2f>{sf::Vector2f(64*9 +32, 64*7 +32), sf::Vector2f(64*8 +32, 64*7 +32)},
-                e1_speed, resources, EnemyMoveMode::PingPong
-            ));
-
+        case 10: {
+            float e1_speed = 100.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*8 +12, 64*4 +32), sf::Vector2f(64*9 +52, 64*4 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*9 +52, 64*5 +32), sf::Vector2f(64*8 +12, 64*5 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*8 +12, 64*6 +32), sf::Vector2f(64*9 +52, 64*6 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*9 +52, 64*7 +32), sf::Vector2f(64*8 +12, 64*7 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*7 +52, 64*7 +32), sf::Vector2f(64*6 +12, 64*7 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*6 +12, 64*8 +32), sf::Vector2f(64*7 +52, 64*8 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*7 +52, 64*9 +32), sf::Vector2f(64*6 +12, 64*9 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            //dół
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*8 +32, 64*10 +52), sf::Vector2f(64*8 +32, 64*9 +12)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*9 +32, 64*9 +12), sf::Vector2f(64*9 +32, 64*10 +52)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*10 +32, 64*10 +52), sf::Vector2f(64*10 +32, 64*9 +12)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*11 +32, 64*9 +12), sf::Vector2f(64*11 +32, 64*10 +52)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*12 +32, 64*10 +52), sf::Vector2f(64*12 +32, 64*9 +12)},e1_speed, resources, EnemyMoveMode::PingPong));
+            //prawo
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*13 +12, 64*9 +32), sf::Vector2f(64*14 +52, 64*9 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*14 +52, 64*8 +32), sf::Vector2f(64*13 +12, 64*8 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*13 +12, 64*7 +32), sf::Vector2f(64*14 +52, 64*7 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*11 +12, 64*7 +32), sf::Vector2f(64*12 +52, 64*7 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*12 +52, 64*6 +32), sf::Vector2f(64*11 +12, 64*6 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*11 +12, 64*5 +32), sf::Vector2f(64*12 +52, 64*5 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*12 +52, 64*4 +32), sf::Vector2f(64*11 +12, 64*4 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
 
             break;
         }
@@ -524,23 +529,6 @@ std::vector<std::vector<int> > LevelManager::create_level_7() {
 }
 std::vector<std::vector<int> > LevelManager::create_level_8() {
     std::vector<std::vector<int>> level_8 = {
-        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,320,310,321,3,320,310,321,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,313,312,322,3,313,312,322,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,130,3,3,3,130,3,3,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,213,121,3,120,211,3,3,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,113,211,3,213,111,3,3,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,213,111,3,113,211,3,3,3,3,3,3,3,3},
-        {3,3,3,3,3,3,120,210,112,222,3,223,112,210,121,3,3,3,3,3},
-        {3,3,3,3,3,3,213,111,3,3,3,3,3,113,211,3,3,3,3,3},
-        {3,3,3,3,3,3,123,212,110,210,110,210,110,212,122,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,223,112,212,112,222,3,3,3,3,3,3,3},
-        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
-    };
-    return level_8;
-}
-std::vector<std::vector<int> > LevelManager::create_level_10() {
-    std::vector<std::vector<int>> level_10 = {
         {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
     {3, 320, 310, 321,3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
     {3, 313, 30, 30, 110, 210, 121, 3, 120, 221,3, 220, 121,3, 120, 310, 321, 3, 3, 3},
@@ -554,8 +542,26 @@ std::vector<std::vector<int> > LevelManager::create_level_10() {
     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,3, 3, 3, 3, 3},
     {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
     };
+    return level_8;
+}
+std::vector<std::vector<int> > LevelManager::create_level_10() {
+    std::vector<std::vector<int>> level_10 = {
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,320,310,321,3,320,310,321,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,313,312,322,3,313,312,322,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,130,3,3,3,130,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,213,121,3,120,211,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,113,211,3,213,111,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,213,111,3,113,211,3,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,120,210,112,222,3,223,112,210,121,3,3,3,3,3},
+        {3,3,3,3,3,3,213,111,3,3,3,3,3,113,211,3,3,3,3,3},
+        {3,3,3,3,3,3,123,212,110,210,110,210,110,212,122,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,223,112,212,112,222,3,3,3,3,3,3,3},
+        {3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3}
+    };
     return level_10;
 }
+
 
 std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& level_num, ResourceManager& resources) {
     std::vector<std::unique_ptr<Area>> level_areas;
@@ -592,11 +598,11 @@ std::vector<std::unique_ptr<Area>> LevelManager::get_level_areas(const int& leve
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*9,64*5,64*2,64*2)));
             break;
         }
-        case 8: {
+        case 10: {
             level_areas.emplace_back(std::make_unique<GoalArea>(sf::FloatRect(64*12,64*1,64*3,64*2)));
             break;
         }
-        case 10: {
+        case 8: {
             sf::FloatRect c_point_pos = sf::FloatRect(64*10,64*4,64*1,64*1);
             sf::Vector2f res_pos = sf::Vector2f(64*10+32, 64*4+32);
             level_areas.emplace_back(std::make_unique<CheckpointArea>(c_point_pos,res_pos,resources));
