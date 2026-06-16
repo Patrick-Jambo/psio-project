@@ -338,7 +338,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 8: {
-            float e1_speed = 400.0f;
+            float e1_speed = 170.0f;
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 std::vector<sf::Vector2f>{sf::Vector2f(64*8 +32, 64*4 +32), sf::Vector2f(64*9 +32, 64*4 +32)},
                 e1_speed, resources, EnemyMoveMode::PingPong
