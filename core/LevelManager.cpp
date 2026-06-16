@@ -2,6 +2,7 @@
 #include "../areas/Area.hpp"
 #include "../areas/CheckpointArea.hpp"
 #include "../areas/GoalArea.hpp"
+#include <algorithm>
 
 std::vector<std::vector<int>> LevelManager::get_level(const int& level_num) {
     switch (level_num) {
@@ -135,143 +136,45 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
         }
         case 3: {
             constexpr float enemy_speed = 200.0f;
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-            std::vector<sf::Vector2f>{
-                sf::Vector2f(64*6-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32),
-            },
-            enemy_speed,
-            resources,
-            EnemyMoveMode::Path
-        ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-            std::vector<sf::Vector2f>{
-                sf::Vector2f(64*15-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*7-32),
-            },
-            enemy_speed,
-            resources,
-            EnemyMoveMode::Path
-        ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-            std::vector<sf::Vector2f>{
 
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32),
+            std::vector<sf::Vector2f> base_path = {
                 sf::Vector2f(64*6-32, 64*4-32),
                 sf::Vector2f(64*8-32, 64*4-32),
                 sf::Vector2f(64*10-32, 64*4-32),
                 sf::Vector2f(64*10-32, 64*7-32),
                 sf::Vector2f(64*15-32, 64*7-32),
                 sf::Vector2f(64*15-32, 64*9-32),
-            },
-            enemy_speed,
-            resources,
-            EnemyMoveMode::Path
-        ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-            std::vector<sf::Vector2f>{
+                sf::Vector2f(64*16-32, 64*9-32),
+                sf::Vector2f(64*16-32, 64*6-32),
+                sf::Vector2f(64*11-32, 64*6-32),
+                sf::Vector2f(64*11-32, 64*3-32),
+                sf::Vector2f(64*10-32, 64*3-32),
+                sf::Vector2f(64*6-32, 64*3-32)
+            };
 
-                sf::Vector2f(64*10-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*4-32),
-                sf::Vector2f(64*8-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*4-32),
-            },
-            enemy_speed,
-            resources,
-            EnemyMoveMode::Path
-        ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-            std::vector<sf::Vector2f>{
+            // Wzór: 3 wrogów pod rząd, 1 indeks przerwy
+            std::vector<int> start_indices = {
+                0, 1, 2,    // Grupa 1 (przerwa na indeksie 3)
+                4, 5, 6,    // Grupa 2 (przerwa na indeksie 7)
+                8, 9, 10    // Grupa 3 (przerwa na indeksie 11)
+            };
 
-                sf::Vector2f(64*15-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*4-32),
-                sf::Vector2f(64*8-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*7-32),
-            },
-            enemy_speed,
-            resources,
-            EnemyMoveMode::Path
-        ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-            std::vector<sf::Vector2f>{
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*4-32),
-                sf::Vector2f(64*8-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-            },
-            enemy_speed,
-            resources,
-            EnemyMoveMode::Path
-        ));
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-            std::vector<sf::Vector2f>{
+            for (int offset : start_indices) {
+                std::vector<sf::Vector2f> current_path = base_path;
 
-                sf::Vector2f(64*8-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*4-32),
-            },
-            enemy_speed,
-            resources,
-            EnemyMoveMode::Path
-        ));
+                // Obrót ścieżki o konkretny offset
+                std::rotate(current_path.begin(), current_path.begin() + offset, current_path.end());
+
+                level_enemies.emplace_back(std::make_unique<Enemy>(
+                    current_path,
+                    enemy_speed,
+                    resources,
+                    EnemyMoveMode::Path
+                ));
+            }
             break;
         }
+
         case 4: {
             std::vector<sf::Vector2f> centers = {
                 sf::Vector2f(64 * 5, 64 * 3),  // center_point1
@@ -335,6 +238,92 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle270));
             level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusC, angular_speed, resources, angle270));
             level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusD, angular_speed, resources, angle270));
+
+            break;
+        }
+        case 6: {
+            sf::Vector2f center_point1(64 * 7, 64 * 4);
+            sf::Vector2f center_point2(64 * 7, 64 * 8);
+            float radiusB = 56*2;
+            float angular_speed = 2.3f;
+            float angle0 = 0.0f; // 0 stopni
+            float angle90 = 1.5707963f; // 90 stopni
+            float angle180 = 3.1415927f; // 180 stopni
+            float angle270 = 4.7123890f; // 270 stopni
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle0));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle90));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle180));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle270));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle0));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle90));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle180));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle270));
+
+            constexpr float enemy_speed = 275.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{sf::Vector2f(64 * 9 + 32, 64 * 2 + 32), sf::Vector2f(64 * 9 + 32, 64 * 9 + 32)},
+                enemy_speed, resources, EnemyMoveMode::PingPong
+            ));
+
+            float path_speed = 250.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{
+                    sf::Vector2f(64*9 +32, 64*3 +32), // Lewy górny
+                    sf::Vector2f(64*14 +32, 64*3 +32), // Prawy górny
+                    sf::Vector2f(64*14 +32, 64*8 +32), // Prawy dolny
+                    sf::Vector2f(64*9 +32, 64*8 +32)  // Lewy dolny
+                },
+                path_speed,
+                resources,
+                EnemyMoveMode::Path
+            ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{
+                    sf::Vector2f(64*14 +32, 64*8 +32), // Prawy dolny
+                    sf::Vector2f(64*9 +32, 64*8 +32),  // Lewy dolny
+                    sf::Vector2f(64*9 +32, 64*3 +32), // Lewy górny
+                    sf::Vector2f(64*14 +32, 64*3 +32), // Prawy górny
+                },
+                path_speed,
+                resources,
+                EnemyMoveMode::Path
+            ));
+
+
+            break;
+        }
+        case 7: {
+            float path_speed = 250.0f;
+
+            std::vector<sf::Vector2f> base_path = {
+                sf::Vector2f(64 * 8 + 32,  64 * 4 + 32),
+                sf::Vector2f(64 * 9 + 32,  64 * 4 + 32),
+                sf::Vector2f(64 * 10 + 32, 64 * 4 + 32),
+                sf::Vector2f(64 * 11 + 32, 64 * 4 + 32),
+
+                sf::Vector2f(64 * 11 + 32, 64 * 5 + 32),
+                sf::Vector2f(64 * 11 + 32, 64 * 6 + 32),
+                sf::Vector2f(64 * 11 + 32, 64 * 7 + 32),
+
+                sf::Vector2f(64 * 10 + 32, 64 * 7 + 32),
+                sf::Vector2f(64 * 9 + 32,  64 * 7 + 32),
+                sf::Vector2f(64 * 8 + 32,  64 * 7 + 32),
+
+                sf::Vector2f(64 * 8 + 32,  64 * 6 + 32),
+                sf::Vector2f(64 * 8 + 32,  64 * 5 + 32)
+            };
+
+            for (int i = 0; i < 11; ++i) {
+                std::vector<sf::Vector2f> current_path = base_path;
+                std::rotate(current_path.begin(), current_path.begin() + i, current_path.end());
+
+                level_enemies.emplace_back(std::make_unique<Enemy>(
+                    current_path,
+                    path_speed,
+                    resources,
+                    EnemyMoveMode::Path
+                ));
+            }
 
             break;
         }
