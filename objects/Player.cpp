@@ -13,7 +13,7 @@ Player::Player(sf::Vector2f start_pos, ResourceManager& resources) {
     animator->add_frame_line(0,0,300,300,6,5);
 
     player_sprite.setOrigin(300 / 2.0f, 300 / 2.0f);
-    setScale(0.149f, 0.149f);
+    setScale(0.145f, 0.145f);
     setPosition(start_pos);
 }
 
