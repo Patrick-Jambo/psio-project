@@ -151,34 +151,25 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 3: {
-            constexpr float enemy_speed = 200.0f;
+            constexpr float enemy_speed = 230.0f;
 
+            // Zagęszczona ścieżka - każdy pojedynczy kafel na trasie (32 punkty)
             std::vector<sf::Vector2f> base_path = {
-                sf::Vector2f(64*6-32, 64*4-32),
-                sf::Vector2f(64*8-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*9-32),
+                sf::Vector2f(64*6-32, 64*4-32), sf::Vector2f(64*7-32, 64*4-32), sf::Vector2f(64*8-32, 64*4-32), sf::Vector2f(64*9-32, 64*4-32), sf::Vector2f(64*10-32, 64*4-32),
+                sf::Vector2f(64*10-32, 64*5-32), sf::Vector2f(64*10-32, 64*6-32), sf::Vector2f(64*10-32, 64*7-32),
+                sf::Vector2f(64*11-32, 64*7-32), sf::Vector2f(64*12-32, 64*7-32), sf::Vector2f(64*13-32, 64*7-32), sf::Vector2f(64*14-32, 64*7-32), sf::Vector2f(64*15-32, 64*7-32),
+                sf::Vector2f(64*15-32, 64*8-32), sf::Vector2f(64*15-32, 64*9-32),
                 sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*3-32),
+                sf::Vector2f(64*16-32, 64*8-32), sf::Vector2f(64*16-32, 64*7-32), sf::Vector2f(64*16-32, 64*6-32),
+                sf::Vector2f(64*15-32, 64*6-32), sf::Vector2f(64*14-32, 64*6-32), sf::Vector2f(64*13-32, 64*6-32), sf::Vector2f(64*12-32, 64*6-32), sf::Vector2f(64*11-32, 64*6-32),
+                sf::Vector2f(64*11-32, 64*5-32), sf::Vector2f(64*11-32, 64*4-32), sf::Vector2f(64*11-32, 64*3-32),
                 sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*6-32, 64*3-32)
+                sf::Vector2f(64*9-32, 64*3-32), sf::Vector2f(64*8-32, 64*3-32), sf::Vector2f(64*7-32, 64*3-32), sf::Vector2f(64*6-32, 64*3-32)
             };
 
-            // Wzór: 3 wrogów pod rząd, 1 indeks przerwy
-            std::vector<int> start_indices = {
-                0, 1, 2,    // Grupa 1 (przerwa na indeksie 3)
-                4, 5, 6,    // Grupa 2 (przerwa na indeksie 7)
-                8, 9, 10    // Grupa 3 (przerwa na indeksie 11)
-            };
-
-            for (int offset : start_indices) {
+            // Skok o 2 kafelki daje nam idealny odstęp i umieszcza 16 wrogów
+            for (size_t offset = 0; offset < base_path.size(); offset += 3) {
                 std::vector<sf::Vector2f> current_path = base_path;
-
-                // Obrót ścieżki o konkretny offset
                 std::rotate(current_path.begin(), current_path.begin() + offset, current_path.end());
 
                 level_enemies.emplace_back(std::make_unique<Enemy>(
@@ -190,7 +181,6 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             }
             break;
         }
-
         case 4: {
             std::vector<sf::Vector2f> centers = {
                 sf::Vector2f(64 * 5, 64 * 3),  // center_point1
@@ -343,7 +333,10 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
 
             break;
         }
+        case 8: {
 
+            break;
+        }
         case 9: {
             constexpr float enemy_speed = 300.0f;
 
@@ -614,9 +607,9 @@ std::vector<std::vector<int> > LevelManager::create_level_8() {
         {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
     {3, 320, 310, 321,3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
     {3, 313, 30, 30, 110, 210, 121, 3, 120, 221,3, 220, 121,3, 120, 310, 321, 3, 3, 3},
-    {3, 313, 30, 30, 20, 10, 211, 3, 213, 111, 3, 113, 211,3, 232, 312, 322, 3, 3, 3},
-    {3, 313, 30, 30, 10, 20, 111, 3, 113, 20, 331, 20, 111,3, 132, 3, 3, 3, 3, 3},
-    {3, 313, 30, 30, 212, 10, 211, 3, 213, 111, 3, 113, 211,3, 232,3, 3, 3,3, 3},
+    {3, 313, 30, 30, 20, 10, 211, 3, 213, 111, 3, 113, 211,3, 213, 312, 322, 3, 3, 3},
+    {3, 313, 30, 30, 112, 20, 111, 3, 113, 20, 331, 20, 111,3, 132, 3, 3, 3, 3, 3},
+    {3, 313, 30, 311, 3, 113, 211, 3, 213, 111, 3, 113, 211,3, 232,3, 3, 3,3, 3},
     {3, 323, 312, 322,3, 213, 111, 3, 113, 211, 3, 213, 111,3, 132,3, 3, 3, 3, 3},
     {3, 3, 3, 3, 3, 113, 211, 3, 213, 111, 3, 113, 211, 3, 232, 3, 3, 3, 3, 3},
     {3, 3, 3, 3, 3, 213, 111, 3, 113, 211, 3, 213, 111, 3, 132, 3, 3, 3, 3, 3},
