@@ -3,6 +3,10 @@
         "best_time": 3.46,
         "intertitle_text": "YOU DON'T STAND A CHANCE."
     },
+    "10": {
+        "best_time": -1,
+        "intertitle_text": "THE FINAL STRETCH!"
+    },
     "2": {
         "best_time": 2.17,
         "intertitle_text": "SLOW AND STEADY WINS THE...\n          OH WAIT, YOU DIED."
@@ -16,8 +20,24 @@
         "intertitle_text": "THIS IS WHERE IT ACTUALLY GETS HARD."
     },
     "5": {
-        "best_time": 3.71,
-        "intertitle_text": "THE FINAL STRETCH!"
+        "best_time": -1,
+        "intertitle_text": "HOPE YOU LIKE RAGELOGGING."
+    },
+    "6": {
+        "best_time": -1,
+        "intertitle_text": "CUTE. YOU THOUGHT YOU WERE HALFWAY THERE."
+    },
+    "7": {
+        "best_time": -1,
+        "intertitle_text": "DEATH IS NOT AN OPTION, IT'S A GUARANTEE."
+    },
+    "8": {
+        "best_time": -1,
+        "intertitle_text": "YOUR KEYBOARD WON'T SURVIVE THIS ONE."
+    },
+    "9": {
+        "best_time": -1,
+        "intertitle_text": "JUST GIVE UP ALREADY."
     },
     "global_stats": {
         "best_time": 11.35413932800293,
@@ -26,8 +46,8 @@
     "settings": {
         "god_mode_enabled": false,
         "hitboxes_enabled": false,
-        "music_enabled": false,
+        "music_enabled": true,
         "sounds_enabled": true,
-        "volume": 90.0
+        "volume": 30.0
     }
 }

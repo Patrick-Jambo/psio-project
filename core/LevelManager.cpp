@@ -77,7 +77,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
 
     switch (level_num) {
         case 1: {
-            float e1_speed = 400.0f;
+            float e1_speed = 425.0f;
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 std::vector<sf::Vector2f>{sf::Vector2f(352.0f, 288.0f), sf::Vector2f(928.0f, 288.0f)},
                 e1_speed, resources, EnemyMoveMode::PingPong
@@ -151,34 +151,53 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 3: {
-            constexpr float enemy_speed = 230.0f;
+            constexpr float enemy_speed = 255.0f;
 
-            // Zagęszczona ścieżka - każdy pojedynczy kafel na trasie (32 punkty)
-            std::vector<sf::Vector2f> base_path = {
-                sf::Vector2f(64*6-32, 64*4-32), sf::Vector2f(64*7-32, 64*4-32), sf::Vector2f(64*8-32, 64*4-32), sf::Vector2f(64*9-32, 64*4-32), sf::Vector2f(64*10-32, 64*4-32),
-                sf::Vector2f(64*10-32, 64*5-32), sf::Vector2f(64*10-32, 64*6-32), sf::Vector2f(64*10-32, 64*7-32),
-                sf::Vector2f(64*11-32, 64*7-32), sf::Vector2f(64*12-32, 64*7-32), sf::Vector2f(64*13-32, 64*7-32), sf::Vector2f(64*14-32, 64*7-32), sf::Vector2f(64*15-32, 64*7-32),
-                sf::Vector2f(64*15-32, 64*8-32), sf::Vector2f(64*15-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*9-32),
-                sf::Vector2f(64*16-32, 64*8-32), sf::Vector2f(64*16-32, 64*7-32), sf::Vector2f(64*16-32, 64*6-32),
-                sf::Vector2f(64*15-32, 64*6-32), sf::Vector2f(64*14-32, 64*6-32), sf::Vector2f(64*13-32, 64*6-32), sf::Vector2f(64*12-32, 64*6-32), sf::Vector2f(64*11-32, 64*6-32),
-                sf::Vector2f(64*11-32, 64*5-32), sf::Vector2f(64*11-32, 64*4-32), sf::Vector2f(64*11-32, 64*3-32),
-                sf::Vector2f(64*10-32, 64*3-32),
-                sf::Vector2f(64*9-32, 64*3-32), sf::Vector2f(64*8-32, 64*3-32), sf::Vector2f(64*7-32, 64*3-32), sf::Vector2f(64*6-32, 64*3-32)
-            };
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{sf::Vector2f(64*5,64*3 + 32), sf::Vector2f(64*10,64*3 + 32)},
+                enemy_speed,
+                resources,
+                EnemyMoveMode::PingPong
+            ));
 
-            // Skok o 2 kafelki daje nam idealny odstęp i umieszcza 16 wrogów
-            for (size_t offset = 0; offset < base_path.size(); offset += 3) {
-                std::vector<sf::Vector2f> current_path = base_path;
-                std::rotate(current_path.begin(), current_path.begin() + offset, current_path.end());
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{sf::Vector2f(64*10,64*2 + 32), sf::Vector2f(64*5,64*2 + 32)},
+                enemy_speed,
+                resources,
+                EnemyMoveMode::PingPong
+            ));
 
-                level_enemies.emplace_back(std::make_unique<Enemy>(
-                    current_path,
-                    enemy_speed,
-                    resources,
-                    EnemyMoveMode::Path
-                ));
-            }
+            constexpr float e2_spd = 255.0f;
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{
+                    sf::Vector2f(64*9 +32, 64*5 +32), // Lewy górny
+                    sf::Vector2f(64*15 +32, 64*5 +32), // Prawy górny
+                    sf::Vector2f(64*15 +32, 64*6 +32), // Prawy dolny
+                    sf::Vector2f(64*9 +32, 64*6 +32)  // Lewy dolny
+                },
+                e2_spd,
+                resources,
+                EnemyMoveMode::Path
+            ));
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{
+                    sf::Vector2f(64*15 +32, 64*6 +32), // Lewy górny
+                    sf::Vector2f(64*9 +32, 64*6 +32), // Prawy górny
+                    sf::Vector2f(64*9 +32, 64*5 +32), // Prawy dolny
+                    sf::Vector2f(64*15 +32, 64*5 +32)  // Lewy dolny
+                },
+                e2_spd,
+                resources,
+                EnemyMoveMode::Path
+            ));
+
+
+
+
+
+
             break;
         }
         case 4: {
@@ -440,6 +459,17 @@ std::vector<std::unique_ptr<Collectible>> LevelManager::get_level_collectibles(c
     switch (level_num) {
         case 2:
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 10, 64 * 6),resources));
+            break;
+        case 3:
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 8, 64 * 3),resources));
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 10 + 32, 64 * 2 + 32),resources));
+
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 9 + 32, 64 * 6 + 32),resources));
+            level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 15 + 32, 64 * 5 + 32),resources));
+
+
+
+
             break;
         case 4:
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 15 + 32, 64 * 7 + 32),resources));
