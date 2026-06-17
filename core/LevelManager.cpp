@@ -334,7 +334,15 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 8: {
-
+            float path_speed = 250.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector<sf::Vector2f>{
+                    sf::Vector2f(64*5 +32, 64*2 +32),sf::Vector2f(64*5 +32, 64*9 +32),
+                    sf::Vector2f(64*6 +32, 64*9 +32),sf::Vector2f(64*6 +32, 64*2 +32)},
+                path_speed,
+                resources,
+                EnemyMoveMode::Path
+            ));
             break;
         }
         case 9: {

@@ -141,6 +141,12 @@ void Game::handle_events() {
                     game_state = Game_state::PAUSED;
                 }
 
+                if (event.type == sf::Event::KeyPressed) {
+                    if (event.key.code == sf::Keyboard::R) {
+                        reset_level();
+                    }
+                }
+
                 if (level_stats_display && level_stats_display->handle_menu_click(mouse_pos, event)) {
                     current_level = 1;
                     death_counter = 0;
@@ -348,6 +354,24 @@ void Game::check_game_collisions() {
             area->on_enter(*this);
         }
     }
+}
+
+void Game::reset_level() {
+    collected_count = 0;
+    death_counter++;
+    level_time = 0.0f;
+    collectibles = LevelManager::get_level_collectibles(current_level, resources);
+    areas = LevelManager::get_level_areas(current_level,resources);
+    enemies = LevelManager::get_level_enemies(current_level,resources);
+
+    sf::Vector2f respawn_pos = LevelManager::get_player_start_pos(current_level);
+    player->set_respawn_position(respawn_pos);
+    player->respawn();
+
+    // TODO: ADD RESPAWN SOUND
+    //if (sound_manager) {
+     //   sound_manager->play_respawn_sound();
+    //}/
 }
 
 void Game::advance_level() {

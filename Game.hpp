@@ -37,6 +37,7 @@ private:
     void render();
     void init_level(const int& level_num);
     void render_pause_screen();
+    void reset_level();
 
 
 
