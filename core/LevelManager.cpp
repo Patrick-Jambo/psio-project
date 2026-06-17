@@ -153,7 +153,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
         case 3: {
             constexpr float enemy_speed = 230.0f;
 
-            // Zagęszczona ścieżka - każdy pojedynczy kafel na trasie (32 punkty)
+            
             std::vector<sf::Vector2f> base_path = {
                 sf::Vector2f(64*6-32, 64*4-32), sf::Vector2f(64*7-32, 64*4-32), sf::Vector2f(64*8-32, 64*4-32), sf::Vector2f(64*9-32, 64*4-32), sf::Vector2f(64*10-32, 64*4-32),
                 sf::Vector2f(64*10-32, 64*5-32), sf::Vector2f(64*10-32, 64*6-32), sf::Vector2f(64*10-32, 64*7-32),
@@ -167,7 +167,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
                 sf::Vector2f(64*9-32, 64*3-32), sf::Vector2f(64*8-32, 64*3-32), sf::Vector2f(64*7-32, 64*3-32), sf::Vector2f(64*6-32, 64*3-32)
             };
 
-            // Skok o 2 kafelki daje nam idealny odstęp i umieszcza 16 wrogów
+
             for (size_t offset = 0; offset < base_path.size(); offset += 3) {
                 std::vector<sf::Vector2f> current_path = base_path;
                 std::rotate(current_path.begin(), current_path.begin() + offset, current_path.end());
@@ -334,19 +334,67 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
             break;
         }
         case 8: {
-            float path_speed = 250.0f;
-            level_enemies.emplace_back(std::make_unique<Enemy>(
-                std::vector<sf::Vector2f>{
+            float path_speed = 350.0f;
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{
                     sf::Vector2f(64*5 +32, 64*2 +32),sf::Vector2f(64*5 +32, 64*9 +32),
                     sf::Vector2f(64*6 +32, 64*9 +32),sf::Vector2f(64*6 +32, 64*2 +32)},
-                path_speed,
-                resources,
-                EnemyMoveMode::Path
+                path_speed,resources,EnemyMoveMode::Path
             ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{
+                sf::Vector2f(64*6 +32, 64*9 +32),sf::Vector2f(64*6 +32, 64*2 +32),
+                    sf::Vector2f(64*5 +32, 64*2 +32),sf::Vector2f(64*5 +32, 64*9 +32)},
+                path_speed,resources,EnemyMoveMode::Path
+            ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{
+                    sf::Vector2f(64*5 +32, 64*6 ),sf::Vector2f(64*5 +32, 64*9 +32),
+                    sf::Vector2f(64*6 +32, 64*9 +32),sf::Vector2f(64*6 +32, 64*2 +32),sf::Vector2f(64*5 +32, 64*2 +32)},
+                path_speed,resources,EnemyMoveMode::Path
+            ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{
+                sf::Vector2f(64*6 +32, 64*6 ),sf::Vector2f(64*6 +32, 64*2 +32),
+                sf::Vector2f(64*5 +32, 64*2 +32),sf::Vector2f(64*5 +32, 64*9 +32),sf::Vector2f(64*6 +32, 64*9 +32)},
+                path_speed,resources,EnemyMoveMode::Path
+            ));
+            constexpr float enemy_speed = 50.0f;
+            constexpr float enemy5_speed = 150.0f;
+
+            level_enemies.emplace_back(std::make_unique<Enemy>(
+                std::vector{sf::Vector2f(64*5 + 32, 64*9 + 32), sf::Vector2f(64*9 + 32, 64*9 + 32)},
+                enemy_speed, resources, EnemyMoveMode::PingPong
+            ));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector
+                {sf::Vector2f(64*8 + 12, 64*7 + 32), sf::Vector2f(64*9 + 52, 64*7 + 32)},enemy5_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector
+                {sf::Vector2f(64*9 + 52, 64*6 + 32), sf::Vector2f(64*8 + 12, 64*6 + 32)},enemy5_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector
+                {sf::Vector2f(64*8 + 12, 64*5 + 32), sf::Vector2f(64*9 + 52, 64*5 + 32)},enemy5_speed, resources, EnemyMoveMode::PingPong));
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector
+                {sf::Vector2f(64*9 + 52, 64*4 + 32), sf::Vector2f(64*8 + 12, 64*4 + 32)},enemy5_speed, resources, EnemyMoveMode::PingPong));
+//
+            level_enemies.emplace_back(std::make_unique<Enemy>(std::vector
+                {sf::Vector2f(64*11 + 32, 64*9 + 32), sf::Vector2f(64*11 + 32, 64*2 + 32)},enemy5_speed, resources, EnemyMoveMode::PingPong));
+//
+            sf::Vector2f center_point1(64 * 13+32, 64 * 5);
+            sf::Vector2f center_point2(64 * 13+32, 64 * 8+32);
+            float radiusB = 64;
+            float angular_speed = -2.3f;
+            float angle0 = 0.0f; // 0 stopni
+            float angle90 = 1.5707963f; // 90 stopni
+            float angle180 = 3.1415927f; // 180 stopni
+            float angle270 = 4.7123890f; // 270 stopni
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle0));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle90));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle180));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point1, radiusB, angular_speed, resources, angle270));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle0));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle90));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle180));
+            level_enemies.emplace_back(std::make_unique<Enemy>(center_point2, radiusB, angular_speed, resources, angle270));
+
             break;
         }
         case 9: {
-            constexpr float enemy_speed = 250.0f;
+            constexpr float enemy_speed =250.0f;
 
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 std::vector{sf::Vector2f(64*5 + 32, 64*4 + 32), sf::Vector2f(64*5 + 32, 64*7 + 32)},
