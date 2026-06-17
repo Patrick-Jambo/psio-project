@@ -2,6 +2,14 @@
 
 A 2D pixel-art game made in C++ with SFML. You play as a small flame that has to dodge enemies, burn/collect leaves scattered around each level, and reach the goal zone to advance. The game has 10 levels, a level selector, checkpoints, a settings menu, and persistent save data (best times, death records, settings).
 
+## 📥 Download & Play
+
+**[Download the latest installer here!](https://github.com/Patrick-Jambo/psio-project/releases/tag/v.1.0.0)**
+
+1. Go to the link above.
+2. Download the `FlameTrouble_Setup.exe` file.
+3. Run the installer and enjoy the game!
+
 ## Controls
 
 - `W A S D` – move
