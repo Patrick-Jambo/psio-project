@@ -345,7 +345,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
         }
 
         case 9: {
-            constexpr float enemy_speed = 300.0f;
+            constexpr float enemy_speed = 250.0f;
 
             level_enemies.emplace_back(std::make_unique<Enemy>(
                 std::vector{sf::Vector2f(64*5 + 32, 64*4 + 32), sf::Vector2f(64*5 + 32, 64*7 + 32)},
@@ -400,7 +400,7 @@ std::vector<std::unique_ptr<Enemy>> LevelManager::get_level_enemies(const int &l
         }
 
         case 10: {
-            float e1_speed = 100.0f;
+            float e1_speed = 135.0f;
             level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*8 +12, 64*4 +32), sf::Vector2f(64*9 +52, 64*4 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
             level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*9 +52, 64*5 +32), sf::Vector2f(64*8 +12, 64*5 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
             level_enemies.emplace_back(std::make_unique<Enemy>(std::vector<sf::Vector2f>{sf::Vector2f(64*8 +12, 64*6 +32), sf::Vector2f(64*9 +52, 64*6 +32)},e1_speed, resources, EnemyMoveMode::PingPong));
