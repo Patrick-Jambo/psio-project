@@ -44,10 +44,10 @@
         "death_record": 0
     },
     "settings": {
-        "god_mode_enabled": false,
+        "god_mode_enabled": true,
         "hitboxes_enabled": false,
         "music_enabled": true,
         "sounds_enabled": true,
-        "volume": 30.0
+        "volume": 100.0
     }
 }

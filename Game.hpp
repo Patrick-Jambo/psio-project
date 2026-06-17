@@ -39,8 +39,6 @@ private:
     void render_pause_screen();
     void reset_level();
 
-
-
     sf::Clock game_clock;
     ResourceManager resources;
     sf::RenderWindow game_window;

@@ -23,6 +23,8 @@ Game::Game() : level_map(resources) {
 
     if (bg_music.openFromFile("assets/music/game_loop.mp3")) {
         bg_music.setLoop(true);
+        bg_music.setVolume(Settings::volume);
+
         if (Settings::music_enabled) {
             bg_music.play();
         }
