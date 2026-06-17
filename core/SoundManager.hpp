@@ -11,11 +11,9 @@ public:
     void play_collect_sound();
     void play_level_clear_sound();
     void play_checkpoint_sound();
+    void update();
 
     static std::string get_random_sound(const std::string& sound_prefix, const int& sounds_num);
-
-
-    void update();
 
 private:
     ResourceManager& resources;

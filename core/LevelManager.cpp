@@ -514,10 +514,6 @@ std::vector<std::unique_ptr<Collectible>> LevelManager::get_level_collectibles(c
 
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 9 + 32, 64 * 6 + 32),resources));
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 15 + 32, 64 * 5 + 32),resources));
-
-
-
-
             break;
         case 4:
             level_collectibles.emplace_back(std::make_unique<Collectible>(sf::Vector2f(64 * 15 + 32, 64 * 7 + 32),resources));
